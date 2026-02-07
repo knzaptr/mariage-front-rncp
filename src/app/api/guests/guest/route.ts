@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const admin = await isAuthenticated(req);
     if (admin instanceof NextResponse) return admin;
@@ -15,7 +15,7 @@ export async function POST(req: Request) {
         {
           message: "Missing lastName, firstName, allowsPlusOne 😗",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     if (guestExist) {
       return NextResponse.json(
         { message: "Already resgistered" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     const newGuest = await prisma.guest.create({
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
         lastName: newGuest.lastName,
         firstName: newGuest.firstName,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
