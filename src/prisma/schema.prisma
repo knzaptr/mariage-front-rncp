@@ -1,0 +1,169 @@
+// Schéma Prisma pour site de mariage bilingue (FR/EN)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// ADMINISTRATION
+// ============================================================================
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  hash      String
+  salt      String
+  token     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admins")
+}
+
+// ============================================================================
+// PAGE ACCUEIL - Informations générales du mariage
+// ============================================================================
+
+model WeddingInfo {
+  id           Int      @id @default(autoincrement())
+  brideName    String   @map("bride_name")
+  groomName    String   @map("groom_name")
+  weddingDate  DateTime @map("wedding_date") @db.Date
+  rsvpDeadline DateTime @map("rsvp_deadline") @db.Date
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  translations WeddingInfoTranslation[]
+
+  @@map("wedding_info")
+}
+
+model WeddingInfoTranslation {
+  id            Int    @id @default(autoincrement())
+  weddingInfoId Int    @map("wedding_info_id")
+  language      String @db.VarChar(2) // 'fr' ou 'en'
+  description   String @db.Text
+  venueAddress  String   @map("venue_address")
+
+  weddingInfo WeddingInfo @relation(fields: [weddingInfoId], references: [id], onDelete: Cascade)
+
+  @@unique([weddingInfoId, language])
+  @@map("wedding_info_translations")
+}
+
+// ============================================================================
+// PAGE PROGRAMME - Activités et horaires
+// ============================================================================
+
+model Activity {
+  id           Int      @id @default(autoincrement())
+  time         String   // Format: "14:30"
+  displayOrder Int      @map("display_order")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  translations ActivityTranslation[]
+
+  @@map("activities")
+}
+
+model ActivityTranslation {
+  id           Int    @id @default(autoincrement())
+  activityId   Int    @map("activity_id")
+  language     String @db.VarChar(2) // 'fr' ou 'en'
+  activityName String @map("activity_name")
+
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([activityId, language])
+  @@map("activity_translations")
+}
+
+// ============================================================================
+// PAGE RSVP - Gestion des invités et réponses
+// ============================================================================
+
+model GuestGroup {
+  id        Int      @id @default(autoincrement())
+  groupName String   @unique @map("group_name")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  guests Guest[]
+
+  @@map("guest_groups")
+}
+
+model Guest {
+  id                  Int       @id @default(autoincrement())
+  groupId             Int       @map("group_id")
+  firstName           String    @map("first_name")
+  lastName            String    @map("last_name")
+  
+  // RSVP
+  hasResponded        Boolean   @default(false) @map("has_responded")
+  attending           Boolean?
+  mealChoice          String?   @map("meal_choice") // "viande", "poisson", "végétarien", "enfant"
+  allergies           String?   @db.Text
+  
+  // Plus one
+  allowsPlusOne       Boolean   @default(false) @map("allows_plus_one")
+  plusOneOf           String?   @map("plus_one_of")
+  rsvpSubmittedAt     DateTime? @map("rsvp_submitted_at")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  group GuestGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@index([groupId])
+  @@map("guests")
+}
+
+// ============================================================================
+// PAGE CONTACT - Personnes importantes à contacter
+// ============================================================================
+
+model Contact {
+  id           Int      @id @default(autoincrement())
+  name         String
+  phoneNumber  String   @map("phone_number")
+  imageContact String[] @map("image_contact")
+  displayOrder Int      @map("display_order")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  translations ContactTranslation[]
+
+  @@map("contacts")
+}
+
+model ContactTranslation {
+  id           Int    @id @default(autoincrement())
+  contactId    Int    @map("contact_id")
+  language     String @db.VarChar(2) // 'fr' ou 'en'
+  role         String // Ex: "Témoin", "Best Man"
+  relationship String // Ex: "Frère de la mariée", "Bride's brother"
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, language])
+  @@map("contact_translations")
+}
+
+// ============================================================================
+// PAGE FAQ - Questions fréquentes
+// ============================================================================
+
+model Faq {
+  id           Int      @id @default(autoincrement())
+  language     String   @db.VarChar(2) // 'fr' ou 'en'
+  question     String   @db.Text
+  answer       String   @db.Text
+  displayOrder Int      @map("display_order")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@index([language])
+  @@map("faqs")
+}

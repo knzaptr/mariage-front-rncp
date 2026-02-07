@@ -1,0 +1,23 @@
+{
+  "home": "Accueil",
+  "program": "Programme",
+  "rsvp": "RSVP",
+  "contact": "Contact",
+  "faq": "FAQ",
+  "gifts": "Cadeaux",
+
+  "days": "jours",
+  "hours": "heures",
+  "minutes": "minutes",
+  "seconds": "secondes",
+  "day": "jour",
+  "hour": "heure",
+  "minute": "minute",
+  "second": "seconde",
+
+  "rdvwedding": "Rendez-vous le",
+  "rvspdeadline": "RSVP avant le",
+  "questionprompt": "Une question ?",
+
+  "place": "lieu"
+}

@@ -1,0 +1,59 @@
+"use client";
+import Title from "@/components/Title";
+import { Activity, WeddingInfo } from "@/types";
+import { useLanguage } from "@/context/LanguageContext";
+
+export default function ProgrammePage({
+  progs,
+  weddingInfo,
+}: {
+  progs: Activity[];
+  weddingInfo: WeddingInfo;
+}) {
+  const { t, language } = useLanguage();
+  const weddingInfoTranslation = weddingInfo.translations.find(
+    (t) => t.language === language
+  );
+
+  return (
+    <section className="md:mx-[2%] lg:mx-[10%] px-5">
+      {/* On prend la date du premier programme pour le titre */}
+      <Title level={1} className="text-[60px] text-right capitalize">
+        {new Date(weddingInfo.weddingDate).toLocaleDateString(
+          language === "fr" ? "fr-FR" : "en-US",
+          {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }
+        )}
+      </Title>
+
+      <div className="md:my-10 md:ml-8 text-[25px] lg:text-[40px]">
+        {progs.map((prog) => {
+          // Récupère la traduction correspondant à la langue choisie
+          const translation = prog.translations?.find(
+            (t) => t.language === language
+          );
+          if (!translation) return null;
+
+          return (
+            <div key={prog.id} className="flex justify-between my-4">
+              <span className="italic">{translation.activityName}</span>
+              <span className="font-extrabold italic">{prog.time}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="bg-white h-[1px] w-full"></div>
+      <p className="text-right text-[45px] lg:text-[65px] capitalize">
+        {t("place")}
+      </p>
+      <p className="text-[30px] lg:w-[75%] lg:text-[55px]">
+        {weddingInfoTranslation?.venueAddress}
+      </p>
+    </section>
+  );
+}
