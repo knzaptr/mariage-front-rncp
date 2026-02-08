@@ -11,6 +11,7 @@ const RsvpPage = () => {
   const [isInvited, setIsInvited] = useState<boolean>(false);
   const [foundGroup, setFoundGroup] = useState<GuestGroup | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   const updateGuest = (guestId: number, updates: Partial<Guest>): void => {
     setFoundGroup((prev) => {
@@ -120,7 +121,7 @@ const RsvpPage = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/guests", {
+      const response = await fetch(`${baseUrl}/api/guests`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -154,19 +155,16 @@ const RsvpPage = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/guests/guest/search",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            lastName: nom.trim(),
-            firstName: prenom.trim(),
-          }),
+      const response = await fetch(`${baseUrl}/api/guests/guest/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          lastName: nom.trim(),
+          firstName: prenom.trim(),
+        }),
+      });
 
       if (!response.ok) {
         setIsInvited(false);
