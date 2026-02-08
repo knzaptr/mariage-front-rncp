@@ -13,9 +13,10 @@ export default function PageAdmin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Empêche le rechargement de la page
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     try {
-      const res = await fetch("http://localhost:3000/api/admin/login", {
+      const res = await fetch(`${baseUrl}/api/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
