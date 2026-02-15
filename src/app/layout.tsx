@@ -5,8 +5,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Ma Boutique",
-  description: "Une boutique en ligne moderne et élégante",
+  title: "Lisy & Lilian",
+  description: "Weeding website for Lisy and Lilian",
+  icons: {
+    icon: "/logo-nD3SZYrT.jpeg",
+  },
 };
 
 export default async function RootLayout({

@@ -54,7 +54,7 @@ const Header = () => {
           <Image
             src={Logo}
             alt="logo"
-            className="w-[60px] h-[60px] lg:w-[80px] lg:h-[80px]"
+            className="w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] mix-blend-multiply"
           />
         </Link>
         <div

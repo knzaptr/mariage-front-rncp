@@ -3,7 +3,6 @@ import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { Guest, GuestGroup, MealChoice } from "@/types";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Carousel from "@/components/Carousel";
 
 const RsvpPage = () => {
