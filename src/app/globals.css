@@ -1,15 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap");
 @import "tailwindcss";
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
   --color-wine: #3b0d11;
 }
 
@@ -21,8 +13,8 @@
 }
 
 body {
-  background: var(--foreground);
-  color: var(--background);
+  background: #ededed;
+  color: #0a0a0a;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -69,4 +61,45 @@ body {
   background: #3b0d11;
   color: white;
   transform: rotateY(180deg);
+}
+
+.slider {
+  overflow: hidden;
+  width: 100%;
+}
+
+.slide-track {
+  display: flex;
+  width: max-content; /* important */
+  animation: scroll 20s linear infinite;
+}
+
+.slide {
+  width: 500px;
+  flex-shrink: 0;
+}
+
+.carousel-img {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 769px) {
+  .slide {
+    width: 250px;
+  }
+
+  .carousel-img {
+    height: 250px;
+  }
 }

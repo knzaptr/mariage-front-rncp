@@ -4,6 +4,7 @@ import Title from "@/components/Title";
 import { Guest, GuestGroup, MealChoice } from "@/types";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Carousel from "@/components/Carousel";
 
 const RsvpPage = () => {
   const [nom, setNom] = useState<string>("");
@@ -226,15 +227,9 @@ const RsvpPage = () => {
       <div className="mx-auto">
         <Title level={1}>RSVP</Title>
 
-        <div className="md:bg-black w-full h-60 lg:relative lg:mt-50 lg:mb-80 flex justify-end ">
-          <Image
-            src="/ll1.JPG"
-            alt="logo"
-            width={150}
-            height={400}
-            className="h-full w-full object-contain"
-          />
-          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8 lg:absolute lg:left-50 lg:-top-30 lg:w-[650px] overflow-y-scroll">
+        <div className="w-full relative lg:mt-50 lg:mb-80">
+          <Carousel />
+          <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8 absolute top-40 left-1/2 -translate-x-1/2 w-[90%] lg:translate-x-0 lg:left-50 lg:-top-30 lg:w-[650px] overflow-y-scroll">
             {errorMessage && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 {errorMessage}
