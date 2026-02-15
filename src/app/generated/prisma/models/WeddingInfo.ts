@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums"
-import type * as Prisma from "../internal/prismaNamespace"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model WeddingInfo
@@ -38,6 +38,7 @@ export type WeddingInfoMinAggregateOutputType = {
   id: number | null
   brideName: string | null
   groomName: string | null
+  venueLink: string | null
   weddingDate: Date | null
   rsvpDeadline: Date | null
   updatedAt: Date | null
@@ -47,6 +48,7 @@ export type WeddingInfoMaxAggregateOutputType = {
   id: number | null
   brideName: string | null
   groomName: string | null
+  venueLink: string | null
   weddingDate: Date | null
   rsvpDeadline: Date | null
   updatedAt: Date | null
@@ -56,6 +58,7 @@ export type WeddingInfoCountAggregateOutputType = {
   id: number
   brideName: number
   groomName: number
+  venueLink: number
   weddingDate: number
   rsvpDeadline: number
   updatedAt: number
@@ -75,6 +78,7 @@ export type WeddingInfoMinAggregateInputType = {
   id?: true
   brideName?: true
   groomName?: true
+  venueLink?: true
   weddingDate?: true
   rsvpDeadline?: true
   updatedAt?: true
@@ -84,6 +88,7 @@ export type WeddingInfoMaxAggregateInputType = {
   id?: true
   brideName?: true
   groomName?: true
+  venueLink?: true
   weddingDate?: true
   rsvpDeadline?: true
   updatedAt?: true
@@ -93,6 +98,7 @@ export type WeddingInfoCountAggregateInputType = {
   id?: true
   brideName?: true
   groomName?: true
+  venueLink?: true
   weddingDate?: true
   rsvpDeadline?: true
   updatedAt?: true
@@ -189,6 +195,7 @@ export type WeddingInfoGroupByOutputType = {
   id: number
   brideName: string
   groomName: string
+  venueLink: string | null
   weddingDate: Date
   rsvpDeadline: Date
   updatedAt: Date
@@ -221,6 +228,7 @@ export type WeddingInfoWhereInput = {
   id?: Prisma.IntFilter<"WeddingInfo"> | number
   brideName?: Prisma.StringFilter<"WeddingInfo"> | string
   groomName?: Prisma.StringFilter<"WeddingInfo"> | string
+  venueLink?: Prisma.StringNullableFilter<"WeddingInfo"> | string | null
   weddingDate?: Prisma.DateTimeFilter<"WeddingInfo"> | Date | string
   rsvpDeadline?: Prisma.DateTimeFilter<"WeddingInfo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WeddingInfo"> | Date | string
@@ -231,6 +239,7 @@ export type WeddingInfoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   brideName?: Prisma.SortOrder
   groomName?: Prisma.SortOrder
+  venueLink?: Prisma.SortOrderInput | Prisma.SortOrder
   weddingDate?: Prisma.SortOrder
   rsvpDeadline?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -244,6 +253,7 @@ export type WeddingInfoWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.WeddingInfoWhereInput | Prisma.WeddingInfoWhereInput[]
   brideName?: Prisma.StringFilter<"WeddingInfo"> | string
   groomName?: Prisma.StringFilter<"WeddingInfo"> | string
+  venueLink?: Prisma.StringNullableFilter<"WeddingInfo"> | string | null
   weddingDate?: Prisma.DateTimeFilter<"WeddingInfo"> | Date | string
   rsvpDeadline?: Prisma.DateTimeFilter<"WeddingInfo"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WeddingInfo"> | Date | string
@@ -254,6 +264,7 @@ export type WeddingInfoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   brideName?: Prisma.SortOrder
   groomName?: Prisma.SortOrder
+  venueLink?: Prisma.SortOrderInput | Prisma.SortOrder
   weddingDate?: Prisma.SortOrder
   rsvpDeadline?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -271,6 +282,7 @@ export type WeddingInfoScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"WeddingInfo"> | number
   brideName?: Prisma.StringWithAggregatesFilter<"WeddingInfo"> | string
   groomName?: Prisma.StringWithAggregatesFilter<"WeddingInfo"> | string
+  venueLink?: Prisma.StringNullableWithAggregatesFilter<"WeddingInfo"> | string | null
   weddingDate?: Prisma.DateTimeWithAggregatesFilter<"WeddingInfo"> | Date | string
   rsvpDeadline?: Prisma.DateTimeWithAggregatesFilter<"WeddingInfo"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WeddingInfo"> | Date | string
@@ -279,6 +291,7 @@ export type WeddingInfoScalarWhereWithAggregatesInput = {
 export type WeddingInfoCreateInput = {
   brideName: string
   groomName: string
+  venueLink?: string | null
   weddingDate: Date | string
   rsvpDeadline: Date | string
   updatedAt?: Date | string
@@ -289,6 +302,7 @@ export type WeddingInfoUncheckedCreateInput = {
   id?: number
   brideName: string
   groomName: string
+  venueLink?: string | null
   weddingDate: Date | string
   rsvpDeadline: Date | string
   updatedAt?: Date | string
@@ -298,6 +312,7 @@ export type WeddingInfoUncheckedCreateInput = {
 export type WeddingInfoUpdateInput = {
   brideName?: Prisma.StringFieldUpdateOperationsInput | string
   groomName?: Prisma.StringFieldUpdateOperationsInput | string
+  venueLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weddingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rsvpDeadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -308,6 +323,7 @@ export type WeddingInfoUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   brideName?: Prisma.StringFieldUpdateOperationsInput | string
   groomName?: Prisma.StringFieldUpdateOperationsInput | string
+  venueLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weddingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rsvpDeadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -318,6 +334,7 @@ export type WeddingInfoCreateManyInput = {
   id?: number
   brideName: string
   groomName: string
+  venueLink?: string | null
   weddingDate: Date | string
   rsvpDeadline: Date | string
   updatedAt?: Date | string
@@ -326,6 +343,7 @@ export type WeddingInfoCreateManyInput = {
 export type WeddingInfoUpdateManyMutationInput = {
   brideName?: Prisma.StringFieldUpdateOperationsInput | string
   groomName?: Prisma.StringFieldUpdateOperationsInput | string
+  venueLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weddingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rsvpDeadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -335,6 +353,7 @@ export type WeddingInfoUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   brideName?: Prisma.StringFieldUpdateOperationsInput | string
   groomName?: Prisma.StringFieldUpdateOperationsInput | string
+  venueLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weddingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rsvpDeadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -344,6 +363,7 @@ export type WeddingInfoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   brideName?: Prisma.SortOrder
   groomName?: Prisma.SortOrder
+  venueLink?: Prisma.SortOrder
   weddingDate?: Prisma.SortOrder
   rsvpDeadline?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -357,6 +377,7 @@ export type WeddingInfoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   brideName?: Prisma.SortOrder
   groomName?: Prisma.SortOrder
+  venueLink?: Prisma.SortOrder
   weddingDate?: Prisma.SortOrder
   rsvpDeadline?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -366,6 +387,7 @@ export type WeddingInfoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   brideName?: Prisma.SortOrder
   groomName?: Prisma.SortOrder
+  venueLink?: Prisma.SortOrder
   weddingDate?: Prisma.SortOrder
   rsvpDeadline?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -378,6 +400,10 @@ export type WeddingInfoSumOrderByAggregateInput = {
 export type WeddingInfoScalarRelationFilter = {
   is?: Prisma.WeddingInfoWhereInput
   isNot?: Prisma.WeddingInfoWhereInput
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
 }
 
 export type WeddingInfoCreateNestedOneWithoutTranslationsInput = {
@@ -397,6 +423,7 @@ export type WeddingInfoUpdateOneRequiredWithoutTranslationsNestedInput = {
 export type WeddingInfoCreateWithoutTranslationsInput = {
   brideName: string
   groomName: string
+  venueLink?: string | null
   weddingDate: Date | string
   rsvpDeadline: Date | string
   updatedAt?: Date | string
@@ -406,6 +433,7 @@ export type WeddingInfoUncheckedCreateWithoutTranslationsInput = {
   id?: number
   brideName: string
   groomName: string
+  venueLink?: string | null
   weddingDate: Date | string
   rsvpDeadline: Date | string
   updatedAt?: Date | string
@@ -430,6 +458,7 @@ export type WeddingInfoUpdateToOneWithWhereWithoutTranslationsInput = {
 export type WeddingInfoUpdateWithoutTranslationsInput = {
   brideName?: Prisma.StringFieldUpdateOperationsInput | string
   groomName?: Prisma.StringFieldUpdateOperationsInput | string
+  venueLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weddingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rsvpDeadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -439,6 +468,7 @@ export type WeddingInfoUncheckedUpdateWithoutTranslationsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   brideName?: Prisma.StringFieldUpdateOperationsInput | string
   groomName?: Prisma.StringFieldUpdateOperationsInput | string
+  venueLink?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   weddingDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rsvpDeadline?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -479,6 +509,7 @@ export type WeddingInfoSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   id?: boolean
   brideName?: boolean
   groomName?: boolean
+  venueLink?: boolean
   weddingDate?: boolean
   rsvpDeadline?: boolean
   updatedAt?: boolean
@@ -490,6 +521,7 @@ export type WeddingInfoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   brideName?: boolean
   groomName?: boolean
+  venueLink?: boolean
   weddingDate?: boolean
   rsvpDeadline?: boolean
   updatedAt?: boolean
@@ -499,6 +531,7 @@ export type WeddingInfoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   id?: boolean
   brideName?: boolean
   groomName?: boolean
+  venueLink?: boolean
   weddingDate?: boolean
   rsvpDeadline?: boolean
   updatedAt?: boolean
@@ -508,12 +541,13 @@ export type WeddingInfoSelectScalar = {
   id?: boolean
   brideName?: boolean
   groomName?: boolean
+  venueLink?: boolean
   weddingDate?: boolean
   rsvpDeadline?: boolean
   updatedAt?: boolean
 }
 
-export type WeddingInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "brideName" | "groomName" | "weddingDate" | "rsvpDeadline" | "updatedAt", ExtArgs["result"]["weddingInfo"]>
+export type WeddingInfoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "brideName" | "groomName" | "venueLink" | "weddingDate" | "rsvpDeadline" | "updatedAt", ExtArgs["result"]["weddingInfo"]>
 export type WeddingInfoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   translations?: boolean | Prisma.WeddingInfo$translationsArgs<ExtArgs>
   _count?: boolean | Prisma.WeddingInfoCountOutputTypeDefaultArgs<ExtArgs>
@@ -530,6 +564,7 @@ export type $WeddingInfoPayload<ExtArgs extends runtime.Types.Extensions.Interna
     id: number
     brideName: string
     groomName: string
+    venueLink: string | null
     weddingDate: Date
     rsvpDeadline: Date
     updatedAt: Date
@@ -960,6 +995,7 @@ export interface WeddingInfoFieldRefs {
   readonly id: Prisma.FieldRef<"WeddingInfo", 'Int'>
   readonly brideName: Prisma.FieldRef<"WeddingInfo", 'String'>
   readonly groomName: Prisma.FieldRef<"WeddingInfo", 'String'>
+  readonly venueLink: Prisma.FieldRef<"WeddingInfo", 'String'>
   readonly weddingDate: Prisma.FieldRef<"WeddingInfo", 'DateTime'>
   readonly rsvpDeadline: Prisma.FieldRef<"WeddingInfo", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WeddingInfo", 'DateTime'>

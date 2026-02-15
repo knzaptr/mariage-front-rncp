@@ -3,6 +3,7 @@ import Title from "@/components/Title";
 import { Activity, WeddingInfo } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProgrammePage({
   progs,
@@ -52,9 +53,12 @@ export default function ProgrammePage({
       <p className="text-right text-[45px] lg:text-[65px] capitalize lg:w-[70%]">
         {t("place")}
       </p>
-      <p className="text-[30px] lg:w-[75%] lg:text-[55px]">
+      <Link
+        href={weddingInfo.venueLink || "#"}
+        className="text-[30px] lg:w-[75%] lg:text-[55px] underline block"
+      >
         {weddingInfoTranslation?.venueAddress}
-      </p>
+      </Link>
       <Image
         src="/Sujet.PNG"
         alt="Venue"

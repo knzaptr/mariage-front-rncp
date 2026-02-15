@@ -59,9 +59,12 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
         <div className="col-start-2 md:col-start-2 bg-wine p-3 content-center text-center">
           <Link href="/faq"> {t("questionprompt")}</Link>
         </div>
-        <div className="col-span-2 row-start-3 md:row-span-2 md:col-start-3 md:row-start-1 bg-wine p-3 content-center text-center">
+        <Link
+          href={home.venueLink || "#"}
+          className="col-span-2 row-start-3 md:row-span-2 md:col-start-3 md:row-start-1 bg-wine p-3 content-center text-center underline"
+        >
           {translation?.venueAddress}
-        </div>
+        </Link>
       </div>
     </section>
   );

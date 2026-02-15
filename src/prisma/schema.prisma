@@ -33,6 +33,7 @@ model WeddingInfo {
   id           Int      @id @default(autoincrement())
   brideName    String   @map("bride_name")
   groomName    String   @map("groom_name")
+  venueLink    String?   @map("venue_link")
   weddingDate  DateTime @map("wedding_date") @db.Date
   rsvpDeadline DateTime @map("rsvp_deadline") @db.Date
   updatedAt    DateTime @updatedAt @map("updated_at")

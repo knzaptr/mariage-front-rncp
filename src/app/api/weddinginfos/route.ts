@@ -14,7 +14,7 @@ export async function GET() {
   if (!weddingInfo) {
     return NextResponse.json(
       { error: "Wedding info not found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -29,8 +29,14 @@ export async function PUT(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { translations, brideName, groomName, weddingDate, rsvpDeadline } =
-    body;
+  const {
+    translations,
+    brideName,
+    groomName,
+    venueLink,
+    weddingDate,
+    rsvpDeadline,
+  } = body;
 
   // 1️⃣ Récupérer le WeddingInfo existant
   const weddingInfo = await prisma.weddingInfo.findFirst();
@@ -38,7 +44,7 @@ export async function PUT(request: NextRequest) {
   if (!weddingInfo) {
     return NextResponse.json(
       { error: "Wedding info not found" },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -48,6 +54,7 @@ export async function PUT(request: NextRequest) {
     data: {
       brideName,
       groomName,
+      venueLink,
       weddingDate: weddingDate ? new Date(weddingDate) : undefined,
       rsvpDeadline: rsvpDeadline ? new Date(rsvpDeadline) : undefined,
       translations: translations

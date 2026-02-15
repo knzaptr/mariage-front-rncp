@@ -24,13 +24,13 @@ export default function Slider({ listContact }: { listContact: Contact[] }) {
       >
         {listContact.map((p) => {
           const translation = p.translations?.find(
-            (t) => t.language === language
+            (t) => t.language === language,
           );
 
           return (
             <div
               key={p.id}
-              className="w-full flex-shrink-0 flex justify-center items-center py-12"
+              className="w-full flex-shrink-0 flex justify-center items-center"
               style={{
                 backgroundImage: `
                   linear-gradient(

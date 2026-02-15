@@ -671,6 +671,18 @@ export default function PageAdmin() {
             </div>
           ))}
 
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Lien vers le lieu du mariage
+            </label>
+            <Input
+              type="text"
+              value={weddingInfos.venueLink || ""}
+              onChange={(e) => handleChangeHome("venueLink", e.target.value)}
+              placeholder="Lien vers le lieu du mariage"
+              className="w-full"
+            />
+          </div>
           <button
             type="submit"
             disabled={saving}

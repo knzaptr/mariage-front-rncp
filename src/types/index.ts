@@ -41,6 +41,7 @@ export type WeddingInfo = {
   id: number;
   brideName: string;
   groomName: string;
+  venueLink?: string;
   weddingDate: Date;
   rsvpDeadline: Date;
   updatedAt: Date;
@@ -62,6 +63,7 @@ export type WeddingInfoWithTranslation = Omit<WeddingInfo, "translations"> & {
 export type WeddingInfoUpdateInput = {
   brideName?: string;
   groomName?: string;
+  venueLink?: string;
   weddingDate?: Date | string;
   rsvpDeadline?: Date | string;
   venueAddress?: string;
