@@ -4,7 +4,7 @@ export default async function HomeServer() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   const res = await fetch(`${baseUrl}/api/weddinginfos`, {
-    cache: "no-store",
+    cache: "force-cache",
   });
   if (!res.ok) throw new Error("Failed to fetch wedding info");
 
