@@ -4,8 +4,11 @@ import Title from "@/components/Title";
 import { Guest, GuestGroup, MealChoice } from "@/types";
 import { useState, useEffect } from "react";
 import Carousel from "@/components/Carousel";
+import { useLanguage } from "@/context/LanguageContext";
 
 const RsvpPage = () => {
+  const { t } = useLanguage();
+
   const [nom, setNom] = useState<string>("");
   const [prenom, setPrenom] = useState<string>("");
   const [isInvited, setIsInvited] = useState<boolean>(false);
@@ -224,9 +227,14 @@ const RsvpPage = () => {
   return (
     <section className="py-8">
       <div className="mx-auto">
-        <Title level={1}>RSVP</Title>
+        <Title
+          level={1}
+          className="w-full text-center lg:text-right lg:pr-[8%]"
+        >
+          RSVP
+        </Title>
 
-        <div className="w-full relative lg:mt-50 lg:mb-80">
+        <div className="w-full relative lg:mt-5 lg:mb-40">
           <Carousel />
           <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8 absolute top-40 left-1/2 -translate-x-1/2 w-[90%] lg:translate-x-0 lg:left-50 lg:-top-30 lg:w-[650px] overflow-y-scroll">
             {errorMessage && (
@@ -259,7 +267,7 @@ const RsvpPage = () => {
                   onClick={fetchGuestExists}
                   className="w-full bg-wine text-white px-6 py-3 rounded hover:bg-blue-900 transition font-medium"
                 >
-                  Vérifier mon invitation
+                  {t("checkInvit")}
                 </button>
               </div>
             ) : (
@@ -297,7 +305,7 @@ const RsvpPage = () => {
                         {/* Présence */}
                         <div className="mb-6">
                           <label className="block text-gray-700 font-medium mb-3">
-                            Serez-vous présent(e) ? *
+                            {t("presence")}
                           </label>
                           <div className="flex gap-4">
                             <label className="flex items-center gap-2 cursor-pointer">
@@ -310,7 +318,7 @@ const RsvpPage = () => {
                                 }
                                 className="w-4 h-4"
                               />
-                              <span>Oui, avec plaisir</span>
+                              <span>{t("presenceYes")}</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
                               <input
@@ -322,7 +330,7 @@ const RsvpPage = () => {
                                 }
                                 className="w-4 h-4"
                               />
-                              <span>Non, désolé(e)</span>
+                              <span>{t("presenceNo")}</span>
                             </label>
                           </div>
                         </div>
@@ -332,15 +340,15 @@ const RsvpPage = () => {
                             {/* Choix du repas */}
                             <div className="mb-6">
                               <label className="block text-gray-700 font-medium mb-3">
-                                Choix du repas *
+                                {t("mealChoice")}
                               </label>
                               <div className="grid grid-cols-2 gap-3">
                                 {(
                                   [
-                                    "viande",
-                                    "poisson",
-                                    "vegetarien",
-                                    "enfant",
+                                    t("mealOption1"),
+                                    t("mealOption2"),
+                                    t("mealOption3"),
+                                    t("mealOption4"),
                                   ] as MealChoice[]
                                 ).map((choice) => (
                                   <label
@@ -367,7 +375,7 @@ const RsvpPage = () => {
                             {/* Allergies */}
                             <div className="mb-6">
                               <label className="block text-gray-700 font-medium mb-2">
-                                Allergies, intolérances ou régime particulier
+                                {t("allergies")}
                               </label>
                               <textarea
                                 placeholder="Ex: Allergie aux fruits à coque, régime sans gluten..."
@@ -386,7 +394,7 @@ const RsvpPage = () => {
                               <div className="border-t pt-6 mt-6 bg-blue-50 py-4 rounded">
                                 <div className="mb-4">
                                   <label className="block text-gray-700 font-medium mb-3">
-                                    Souhaitez-vous être accompagné(e) ?
+                                    {t("plusOne")}
                                   </label>
                                   <div className="flex gap-4">
                                     <label className="flex items-center gap-2 cursor-pointer">
@@ -401,7 +409,7 @@ const RsvpPage = () => {
                                         }}
                                         className="w-4 h-4"
                                       />
-                                      <span>Oui</span>
+                                      <span>{t("yes")}</span>
                                     </label>
                                     <label className="flex items-center gap-2 cursor-pointer">
                                       <input
@@ -415,7 +423,7 @@ const RsvpPage = () => {
                                         }}
                                         className="w-4 h-4"
                                       />
-                                      <span>Non</span>
+                                      <span>{t("no")}</span>
                                     </label>
                                   </div>
                                 </div>
@@ -425,11 +433,11 @@ const RsvpPage = () => {
                                     <div className="grid grid-cols-2 gap-3">
                                       <div>
                                         <label className="block text-gray-700 text-sm font-medium mb-2">
-                                          Nom *
+                                          {t("name")} *
                                         </label>
                                         <Input
                                           type="text"
-                                          placeholder="Nom"
+                                          placeholder={t("name")}
                                           value={plusOne.lastName || ""}
                                           onChange={(e) =>
                                             updateGuest(plusOne.id, {
@@ -440,11 +448,11 @@ const RsvpPage = () => {
                                       </div>
                                       <div>
                                         <label className="block text-gray-700 text-sm font-medium mb-2">
-                                          Prénom *
+                                          {t("firstname")} *
                                         </label>
                                         <Input
                                           type="text"
-                                          placeholder="Prénom"
+                                          placeholder={t("firstname")}
                                           value={plusOne.firstName || ""}
                                           onChange={(e) =>
                                             updateGuest(plusOne.id, {
@@ -472,7 +480,7 @@ const RsvpPage = () => {
                                             }
                                             className="w-4 h-4"
                                           />
-                                          <span>Oui</span>
+                                          <span>{t("yes")}</span>
                                         </label>
                                         <label className="flex items-center gap-2 cursor-pointer">
                                           <input
@@ -488,7 +496,7 @@ const RsvpPage = () => {
                                             }
                                             className="w-4 h-4"
                                           />
-                                          <span>Non</span>
+                                          <span>{t("no")}</span>
                                         </label>
                                       </div>
                                     </div>
@@ -497,15 +505,15 @@ const RsvpPage = () => {
                                       <>
                                         <div>
                                           <label className="block text-gray-700 text-sm font-medium mb-2">
-                                            Choix du repas *
+                                            {t("mealChoice")}
                                           </label>
                                           <div className="grid grid-cols-2 gap-2">
                                             {(
                                               [
-                                                "viande",
-                                                "poisson",
-                                                "vegetarien",
-                                                "enfant",
+                                                t("mealOption1"),
+                                                t("mealOption2"),
+                                                t("mealOption3"),
+                                                t("mealOption4"),
                                               ] as MealChoice[]
                                             ).map((choice) => (
                                               <label
@@ -536,7 +544,7 @@ const RsvpPage = () => {
 
                                         <div>
                                           <label className="block text-gray-700 text-sm font-medium mb-2">
-                                            Allergies / régime
+                                            {t("allergies")}
                                           </label>
                                           <textarea
                                             placeholder="Allergies ou régime particulier..."
@@ -565,7 +573,7 @@ const RsvpPage = () => {
                   onClick={handleSubmitRSVP}
                   className="w-full bg-wine text-white px-6 py-3 rounded hover:bg-blue-900 transition font-medium mt-6 mb-6"
                 >
-                  Confirmer toutes les réponses
+                  {t("saveInfos")}
                 </button>
               </div>
             )}

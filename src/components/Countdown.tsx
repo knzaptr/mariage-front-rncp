@@ -25,7 +25,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
-        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
       );
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -43,7 +43,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   return (
     <div className="w-[80vw] mx-auto">
       <div className="bg-white h-[1px] w-full"></div>
-      <div className="flex flex-row flex-wrap justify-center items-center my-[15px] mx-auto gap-y-5 md:w-[100%] md:gap-20 md:flex-nowrap text-center">
+      <div className="flex flex-row flex-wrap justify-center items-center my-[15px] mx-auto gap-y-5 md:w-[70%] md:gap-20 md:flex-nowrap text-center">
         <div className="w-[calc(100%/2)]">
           <p className="text-5xl font-bold">{timeLeft.days}</p>
           <p className="text-sm text-gray-500">

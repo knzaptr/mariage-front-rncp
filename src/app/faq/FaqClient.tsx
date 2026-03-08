@@ -27,14 +27,17 @@ export default function FaqClient({ faq }: { faq: Faq[] }) {
         FAQ
       </Title>
       <div className="grid grid-cols-2 grid-rows-5 lg:grid-cols-5 lg:grid-rows-4 gap-4">
-        <div className="relative aspect-square lg:aspect-auto lg:row-span-2 lg:block bg-pink-300">
+        <div className="relative aspect-[1/2] md:aspect-square lg:aspect-auto lg:row-span-2 lg:block bg-pink-300">
           <Image src="/ll1.JPG" alt="logo" fill className="object-cover" />
         </div>
         {faq
           ?.filter((t) => t.language === language)
           .slice(0, 10) // prend les 10 premières
           .map((t, index) => (
-            <div key={t.id} className={`aspect-square ${positions[index]}`}>
+            <div
+              key={t.id}
+              className={`aspect-[1/2] md:aspect-square ${positions[index]}`}
+            >
               <div className="card">
                 <div className="content">
                   <div className="front">{t.question}</div>
@@ -43,7 +46,7 @@ export default function FaqClient({ faq }: { faq: Faq[] }) {
               </div>
             </div>
           ))}
-        <div className="relative lg:col-span-2 lg:row-span-2 lg:col-start-4 lg:row-start-2 lg:block bg-pink-300 aspect-square">
+        <div className="relative lg:col-span-2 lg:row-span-2 lg:col-start-4 lg:row-start-2 lg:block bg-pink-300 md:aspect-square">
           <Image src="/ll2.JPG" alt="logo" fill className="object-cover" />
         </div>
       </div>

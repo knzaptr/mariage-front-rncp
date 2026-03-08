@@ -30,7 +30,7 @@ export default function Slider({ listContact }: { listContact: Contact[] }) {
           return (
             <div
               key={p.id}
-              className="w-full flex-shrink-0 flex justify-center items-center"
+              className="w-full flex-shrink-0 flex justify-center items-center py-12"
               style={{
                 backgroundImage: `
                   linear-gradient(

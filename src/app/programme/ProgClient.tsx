@@ -32,7 +32,7 @@ export default function ProgrammePage({
         )}
       </Title>
 
-      <div className="md:my-10 md:ml-8 text-[25px] lg:text-[40px] lg:w-[70%]">
+      <div className="md:my-10 md:ml-8 text-[25px] lg:text-[40px]">
         {progs.map((prog) => {
           // Récupère la traduction correspondant à la langue choisie
           const translation = prog.translations?.find(
@@ -50,7 +50,7 @@ export default function ProgrammePage({
       </div>
 
       <div className="bg-white h-[1px] lg:w-[70%]"></div>
-      <p className="text-right text-[45px] lg:text-[65px] capitalize lg:w-[70%]">
+      <p className="text-right text-[45px] lg:text-[65px] capitalize">
         {t("place")}
       </p>
       <Link
@@ -59,13 +59,6 @@ export default function ProgrammePage({
       >
         {weddingInfoTranslation?.venueAddress}
       </Link>
-      <Image
-        src="/Sujet.PNG"
-        alt="Venue"
-        width={500}
-        height={300}
-        className="hidden lg:block w-auto h-auto my-10 absolute top-15 right-0"
-      />
       <Image
         src="/ll4.jpeg"
         alt="Venue"
