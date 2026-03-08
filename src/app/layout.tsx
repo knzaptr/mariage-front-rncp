@@ -23,7 +23,7 @@ export default async function RootLayout({
         <div className="mx-auto pt-8 flex flex-col justify-between">
           <LanguageProvider>
             <Header />
-            <main className="mt-8 min-h-[80vh]">{children}</main>
+            <main className="mt-8 min-h-[75vh]">{children}</main>
             <Footer />
           </LanguageProvider>
         </div>
