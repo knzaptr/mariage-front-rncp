@@ -7,7 +7,7 @@ import { getFaqs } from "@/queries/faq";
  * GET /api/faq?lang=fr
  */
 export async function GET() {
-  const faqs = getFaqs();
+  const faqs = await getFaqs();
 
   return NextResponse.json(faqs);
 }
