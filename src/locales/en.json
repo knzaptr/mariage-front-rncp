@@ -19,5 +19,23 @@
   "rvspdeadline": "RSVP by",
   "questionprompt": "Any question?",
 
-  "place": "place"
+  "place": "place",
+
+  "checkInvit": "Verify my invitation",
+  "name": "Name",
+  "firstname": "First Name",
+  "presence": "Will you be attending? *",
+  "presenceYes": "Yes, with pleasure!",
+  "presenceNo": "No, sorry!",
+  "mealChoice": "Meal choice *",
+  "mealOption1": "Meat",
+  "mealOption2": "Fish",
+  "mealOption3": "Vegetarian",
+  "mealOption4": "Child",
+  "allergies": "Allergies, intolerances or special diet",
+  "plusOne": "Would you like to come with a plus one?",
+  "yes": "Yes",
+  "no": "No",
+
+  "saveInfos": "Save all responses"
 }

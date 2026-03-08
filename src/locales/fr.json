@@ -19,5 +19,23 @@
   "rvspdeadline": "RSVP avant le",
   "questionprompt": "Une question ?",
 
-  "place": "lieu"
+  "place": "lieu",
+
+  "checkInvit": "Vérifier mon invitation",
+  "name": "Nom",
+  "firstname": "Prénom",
+  "presence": "Serez-vous présent(e) ? *",
+  "presenceYes": "Oui,avec plaisir !",
+  "presenceNo": "Non, désolé(e)",
+  "mealChoice": "Choix du repas *",
+  "mealOption1": "Viande",
+  "mealOption2": "Poisson",
+  "mealOption3": "Végétarien",
+  "mealOption4": "Enfant",
+  "allergies": "Allergies, intolérances ou régime particulier",
+  "plusOne": "Souhaitez-vous venir accompagné(e) ?",
+  "yes": "Oui",
+  "no": "Non",
+
+  "saveInfos": "Confirmer toutes les réponses"
 }
