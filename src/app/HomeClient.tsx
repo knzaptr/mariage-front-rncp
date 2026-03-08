@@ -61,7 +61,11 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
         </div>
         <Link
           href={home.venueLink || "#"}
-          className="col-span-2 row-start-3 md:row-span-2 md:col-start-3 md:row-start-1 bg-wine p-3 content-center text-center underline"
+          className="col-span-2 row-start-3 md:row-span-2 md:col-start-3 md:row-start-1 p-3 content-center text-center underline bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(59, 13, 17,0.93), rgba(59, 13, 17,0.93)), url('/map.jpeg')",
+          }}
         >
           {translation?.venueAddress}
         </Link>
