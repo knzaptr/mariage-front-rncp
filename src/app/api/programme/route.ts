@@ -2,17 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { Activity, ActivityTranslation } from "@/types";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
+import { getActivities } from "@/queries/programme";
 
 /**
  * GET /api/activities
  */
 export async function GET() {
-  const activities = await prisma.activity.findMany({
-    orderBy: { time: "asc" },
-    include: {
-      translations: true,
-    },
-  });
+  const activities = await getActivities();
 
   return NextResponse.json(activities);
 }

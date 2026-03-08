@@ -1,11 +1,7 @@
+import { getFaqs } from "@/queries/faq";
 import FaqClient from "./FaqClient";
 
 export default async function FaqServer() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-  const res = await fetch(`${baseUrl}/api/faq`, {
-    cache: "force-cache",
-  });
-  const faqs = await res.json();
+  const faqs = await getFaqs();
   return <FaqClient faq={faqs} />;
 }

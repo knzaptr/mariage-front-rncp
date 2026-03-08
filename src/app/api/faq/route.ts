@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
+import { getFaqs } from "@/queries/faq";
 
 /**
  * GET /api/faq?lang=fr
  */
 export async function GET() {
-  const faqs = await prisma.faq.findMany({
-    orderBy: { displayOrder: "asc" },
-  });
+  const faqs = getFaqs();
 
   return NextResponse.json(faqs);
 }

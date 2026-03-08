@@ -1,15 +1,12 @@
+import { getActivities } from "@/queries/programme";
 import ProgClient from "./ProgClient";
+import { getWeddingInfo } from "@/queries/weddinginfo";
 
 export default async function ProgServer() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const progs = await getActivities();
+  const weddingInfoData = await getWeddingInfo();
 
-  const res = await fetch(`${baseUrl}/api/programme`, {
-    cache: "force-cache",
-  });
-  const weddingInfo = await fetch(`${baseUrl}/api/weddinginfos`, {
-    cache: "force-cache",
-  });
-  const progs = await res.json();
-  const weddingInfoData = await weddingInfo.json();
+  if (!weddingInfoData) return <p>Erreur de chargement</p>;
+
   return <ProgClient progs={progs} weddingInfo={weddingInfoData} />;
 }

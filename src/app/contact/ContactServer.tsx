@@ -1,13 +1,8 @@
 import ContactClient from "./ContactClient";
+// ContactServer.tsx
+import { getContacts } from "@/queries/contact";
+
 export default async function ContactServer() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-  const res = await fetch(`${baseUrl}/api/contact`, {
-    cache: "no-store",
-  });
-
-  const contact = await res.json();
-  // console.log(contact);
-
+  const contact = await getContacts();
   return <ContactClient contact={contact} />;
 }

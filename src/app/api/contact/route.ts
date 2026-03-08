@@ -6,16 +6,13 @@ import { ContactTranslation } from "@/types";
 import cloudinary from "@/lib/cloudinary";
 import convertToBase64 from "@/utils/convertToBase64";
 
-// GET /api/contacts
-export async function GET() {
-  const contacts = await prisma.contact.findMany({
-    orderBy: { displayOrder: "asc" },
-    include: { translations: true },
-  });
+// app/api/contact/route.ts
+import { getContacts } from "@/queries/contact";
 
+export async function GET() {
+  const contacts = await getContacts();
   return NextResponse.json(contacts);
 }
-
 // POST /api/contacts
 export async function POST(request: NextRequest) {
   const admin = await isAuthenticated(request);

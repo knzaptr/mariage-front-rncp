@@ -3,13 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { WeddingInfoTranslation } from "@/types";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
+import { getWeddingInfo } from "@/queries/weddinginfo";
 
 export async function GET() {
-  const weddingInfo = await prisma.weddingInfo.findFirst({
-    include: {
-      translations: true,
-    },
-  });
+  const weddingInfo = await getWeddingInfo();
 
   if (!weddingInfo) {
     return NextResponse.json(
