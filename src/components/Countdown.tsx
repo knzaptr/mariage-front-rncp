@@ -46,25 +46,23 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
       <div className="flex flex-row flex-wrap justify-center items-center my-[15px] mx-auto gap-y-5 md:w-[70%] md:gap-20 md:flex-nowrap text-center">
         <div className="w-[calc(100%/2)]">
           <p className="text-5xl font-bold">{timeLeft.days}</p>
-          <p className="text-sm text-gray-500">
-            {timeLeft.days > 1 ? t("days") : t("day")}
-          </p>
+          <p className="text-sm">{timeLeft.days > 1 ? t("days") : t("day")}</p>
         </div>
         <div className="w-[calc(100%/2)]">
           <p className="text-5xl font-bold">{timeLeft.hours}</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm">
             {timeLeft.hours > 1 ? t("hours") : t("hour")}
           </p>
         </div>
         <div className="w-[calc(100%/2)]">
           <p className="text-5xl font-bold">{timeLeft.minutes}</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm">
             {timeLeft.minutes > 1 ? t("minutes") : t("minute")}
           </p>
         </div>
         <div className="w-[calc(100%/2)]">
           <p className="text-5xl font-bold">{timeLeft.seconds}</p>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm">
             {timeLeft.seconds > 1 ? t("seconds") : t("second")}
           </p>
         </div>

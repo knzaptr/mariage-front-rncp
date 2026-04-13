@@ -108,6 +108,7 @@ const Header = () => {
           </button>
         )}
         <select
+          aria-label="Language"
           value={language}
           onChange={(e) => setLanguage(e.target.value as "fr" | "en")}
           className="border border-gray-300 rounded px-2 py-1"
