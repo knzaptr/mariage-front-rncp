@@ -3,7 +3,7 @@ import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { Guest, GuestGroup, MealChoice } from "@/types";
 import { useState, useEffect } from "react";
-import Carousel from "@/components/Carousel";
+import Carousel from "@/components/Carrousel";
 import { useLanguage } from "@/context/LanguageContext";
 
 const RsvpPage = () => {
@@ -309,26 +309,24 @@ const RsvpPage = () => {
                           </label>
                           <div className="flex gap-4">
                             <label className="flex items-center gap-2 cursor-pointer">
-                              <input
+                              <Input
                                 type="radio"
                                 name={`coming-${guest.id}`}
                                 checked={guest.attending === true}
                                 onChange={() =>
                                   updateGuest(guest.id, { attending: true })
                                 }
-                                className="w-4 h-4"
                               />
                               <span>{t("presenceYes")}</span>
                             </label>
                             <label className="flex items-center gap-2 cursor-pointer">
-                              <input
+                              <Input
                                 type="radio"
                                 name={`coming-${guest.id}`}
                                 checked={guest.attending === false}
                                 onChange={() =>
                                   updateGuest(guest.id, { attending: false })
                                 }
-                                className="w-4 h-4"
                               />
                               <span>{t("presenceNo")}</span>
                             </label>
@@ -355,7 +353,7 @@ const RsvpPage = () => {
                                     key={choice}
                                     className="flex items-center gap-2 cursor-pointer"
                                   >
-                                    <input
+                                    <Input
                                       type="radio"
                                       name={`meal-${guest.id}`}
                                       checked={guest.mealChoice === choice}
@@ -364,7 +362,6 @@ const RsvpPage = () => {
                                           mealChoice: choice,
                                         })
                                       }
-                                      className="w-4 h-4"
                                     />
                                     <span className="capitalize">{choice}</span>
                                   </label>
@@ -398,7 +395,7 @@ const RsvpPage = () => {
                                   </label>
                                   <div className="flex gap-4">
                                     <label className="flex items-center gap-2 cursor-pointer">
-                                      <input
+                                      <Input
                                         type="radio"
                                         name={`addPlusOne-${guest.id}`}
                                         checked={!!plusOne}
@@ -407,12 +404,11 @@ const RsvpPage = () => {
                                             addPlusOneToGroup(guest);
                                           }
                                         }}
-                                        className="w-4 h-4"
                                       />
                                       <span>{t("yes")}</span>
                                     </label>
                                     <label className="flex items-center gap-2 cursor-pointer">
-                                      <input
+                                      <Input
                                         type="radio"
                                         name={`addPlusOne-${guest.id}`}
                                         checked={!plusOne}
@@ -421,7 +417,6 @@ const RsvpPage = () => {
                                             removePlusOne(guest);
                                           }
                                         }}
-                                        className="w-4 h-4"
                                       />
                                       <span>{t("no")}</span>
                                     </label>
@@ -469,7 +464,7 @@ const RsvpPage = () => {
                                       </label>
                                       <div className="flex gap-4">
                                         <label className="flex items-center gap-2 cursor-pointer">
-                                          <input
+                                          <Input
                                             type="radio"
                                             name={`comingPlusOne-${plusOne.id}`}
                                             checked={plusOne.attending === true}
@@ -478,12 +473,11 @@ const RsvpPage = () => {
                                                 attending: true,
                                               })
                                             }
-                                            className="w-4 h-4"
                                           />
                                           <span>{t("yes")}</span>
                                         </label>
                                         <label className="flex items-center gap-2 cursor-pointer">
-                                          <input
+                                          <Input
                                             type="radio"
                                             name={`comingPlusOne-${plusOne.id}`}
                                             checked={
@@ -494,7 +488,6 @@ const RsvpPage = () => {
                                                 attending: false,
                                               })
                                             }
-                                            className="w-4 h-4"
                                           />
                                           <span>{t("no")}</span>
                                         </label>
@@ -520,7 +513,7 @@ const RsvpPage = () => {
                                                 key={choice}
                                                 className="flex items-center gap-2 cursor-pointer"
                                               >
-                                                <input
+                                                <Input
                                                   type="radio"
                                                   name={`mealPlusOne-${plusOne.id}`}
                                                   checked={
@@ -532,7 +525,6 @@ const RsvpPage = () => {
                                                       mealChoice: choice,
                                                     })
                                                   }
-                                                  className="w-4 h-4"
                                                 />
                                                 <span className="capitalize text-sm">
                                                   {choice}
