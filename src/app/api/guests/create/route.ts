@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     if (!body.group || !body.guests || body.guests.length === 0) {
       return NextResponse.json(
         { error: "Le nom du groupe et au moins un invité sont requis" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -21,10 +21,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingGroup) {
-      return NextResponse.json(
-        { error: "Un groupe avec ce nom existe déjà" },
-        { status: 409 }
-      );
+      body.group = `${body.group}_${Date.now()}`; // Ajouter un suffixe unique pour éviter les conflits
     }
 
     // Créer le groupe avec ses invités en une seule transaction
@@ -51,13 +48,13 @@ export async function POST(request: NextRequest) {
         message: "Groupe créé avec succès",
         data: newGroup,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Erreur lors de la création du groupe:", error);
     return NextResponse.json(
       { error: "Erreur serveur lors de la création du groupe" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
