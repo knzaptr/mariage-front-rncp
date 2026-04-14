@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Input from "./Input";
-import Button from "./Button";
 
 // Types
 export type ModalType = "faq" | "activity" | "contact" | null;
@@ -288,30 +287,30 @@ export default function AddModal({
         <div className="p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">{getTitle()}</h2>
-            <Button
+            <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
             >
               ×
-            </Button>
+            </button>
           </div>
           <div>
             {renderForm()}
             <div className="flex gap-3 mt-6">
-              <Button
+              <button
                 onClick={onClose}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                 disabled={isSubmitting}
               >
                 Annuler
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="flex-1 px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "Ajout..." : "Ajouter"}
-              </Button>
+              </button>
             </div>
           </div>
         </div>
