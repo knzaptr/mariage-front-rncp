@@ -5,6 +5,7 @@ import { Guest, GuestGroup, MealChoice } from "@/types";
 import { useState, useEffect } from "react";
 import Carousel from "@/components/Carrousel";
 import { useLanguage } from "@/context/LanguageContext";
+import Button from "@/components/Button";
 
 const RsvpPage = () => {
   const { t } = useLanguage();
@@ -263,12 +264,7 @@ const RsvpPage = () => {
                   />
                 </div>
 
-                <button
-                  onClick={fetchGuestExists}
-                  className="w-full bg-wine text-white px-6 py-3 rounded hover:bg-blue-900 transition font-medium"
-                >
-                  {t("checkInvit")}
-                </button>
+                <Button onClick={fetchGuestExists}>{t("checkInvit")}</Button>
               </div>
             ) : (
               <div className="lg:h-[650px] lg:overflow-y-scroll">
@@ -561,12 +557,9 @@ const RsvpPage = () => {
                     );
                   })}
 
-                <button
-                  onClick={handleSubmitRSVP}
-                  className="w-full bg-wine text-white px-6 py-3 rounded hover:bg-blue-900 transition font-medium mt-6 mb-6"
-                >
+                <Button onClick={handleSubmitRSVP} className="mt-6 mb-6">
                   {t("saveInfos")}
-                </button>
+                </Button>
               </div>
             )}
           </div>
