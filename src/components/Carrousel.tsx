@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const images = ["/ll1.JPG", "/ll2.JPG", "/ll3.JPG"];
 
-const Carousel = () => {
+const Carrousel = () => {
   return (
     <div className="slider w-full">
       <div className="slide-track">
@@ -23,4 +23,4 @@ const Carousel = () => {
   );
 };
 
-export default Carousel;
+export default Carrousel;

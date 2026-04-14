@@ -3,7 +3,7 @@ import Input from "@/components/Input";
 import Title from "@/components/Title";
 import { Guest, GuestGroup, MealChoice } from "@/types";
 import { useState, useEffect } from "react";
-import Carousel from "@/components/Carrousel";
+import Carrousel from "@/components/Carrousel";
 import { useLanguage } from "@/context/LanguageContext";
 import Button from "@/components/Button";
 
@@ -236,7 +236,7 @@ const RsvpPage = () => {
         </Title>
 
         <div className="w-full relative lg:mt-5 lg:mb-40">
-          <Carousel />
+          <Carrousel />
           <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6 md:p-8 absolute top-40 left-1/2 -translate-x-1/2 w-[90%] lg:translate-x-0 lg:left-50 lg:-top-30 lg:w-[650px] overflow-y-scroll">
             {errorMessage && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
