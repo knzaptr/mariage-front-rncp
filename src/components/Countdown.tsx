@@ -42,7 +42,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
 
   return (
     <div className="w-[80vw] mx-auto">
-      <div className="bg-white h-[1px] w-full"></div>
+      <div className="bg-black h-[1px] w-full mb-10"></div>
       <div className="flex flex-row flex-wrap justify-center items-center my-[15px] mx-auto gap-y-5 md:w-[70%] md:gap-20 md:flex-nowrap text-center">
         <div className="w-[calc(100%/2)]">
           <p className="text-5xl font-bold">{timeLeft.days}</p>
@@ -67,7 +67,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
           </p>
         </div>
       </div>
-      <div className="bg-white h-[1px] w-full"></div>
+      <div className="bg-black h-[1px] w-full mt-10"></div>
     </div>
   );
 }
