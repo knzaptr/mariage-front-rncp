@@ -173,7 +173,7 @@ const RsvpPage = () => {
       if (!response.ok) {
         setIsInvited(false);
         setErrorMessage(
-          "Désolé, nous ne trouvons pas votre nom sur la liste des invités",
+          "Désolé, nous ne trouvons pas votre nom sur la liste des invités. Merci de contacter Kenza",
         );
         return;
       }

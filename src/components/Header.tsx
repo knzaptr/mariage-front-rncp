@@ -30,6 +30,30 @@ const Header = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+
+    const syncScrollLock = () => {
+      if (!open) {
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        return;
+      }
+      const lock = mq.matches ? "hidden" : "";
+      document.documentElement.style.overflow = lock;
+      document.body.style.overflow = lock;
+    };
+
+    syncScrollLock();
+    mq.addEventListener("change", syncScrollLock);
+
+    return () => {
+      mq.removeEventListener("change", syncScrollLock);
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const handleLogout = () => {
     Cookies.remove("adminToken");
     setIsAuth(false);
@@ -37,61 +61,130 @@ const Header = () => {
     router.push("/");
   };
 
+  /** Mobile : cartes sur fond blanc ; desktop : uppercase + police plus grande */
+  const navItemClass =
+    "uppercase block w-full max-w-sm mx-auto rounded-2xl border border-slate-200 bg-white px-6 py-4 " +
+    "text-center text-sm font-medium text-slate-800 shadow-sm shadow-slate-200/80 " +
+    "transition-colors hover:border-slate-300 active:scale-[0.99] " +
+    "lg:inline lg:w-auto lg:max-w-none lg:rounded-none lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 " +
+    "lg:text-left lg:text-lg lg:font-normal lg:text-slate-900 lg:shadow-none lg:hover:border-transparent " +
+    "lg:hover:bg-transparent lg:active:scale-100";
+
   return (
-    <header className="flex flex-row justify-between items-center px-4 sm:px-6 lg:px-8 ">
-      <IoMenu
-        className={`${open ? "hidden" : "block"} lg:hidden text-[35px]`}
-        onClick={() => setOpen(true)}
-      />
-      <IoCloseSharp
+    <header className="relative z-40 flex flex-row items-center justify-between px-4 sm:px-6 lg:px-8">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="mobile-nav"
         className={`${
-          open ? "block" : "hidden"
-        } absolute top-8 right-3 z-2 lg:hidden text-[35px]`}
-        onClick={() => setOpen(false)}
-      />
-      <div className="flex flex-col lg:flex-row gap-3 items-center">
+          open ? "hidden" : "flex"
+        } -ml-2 cursor-pointer items-center justify-center rounded-xl p-2 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden`}
+        onClick={() => setOpen(true)}
+      >
+        <IoMenu className="text-3xl" aria-hidden />
+        <span className="sr-only">Ouvrir le menu</span>
+      </button>
+      <div className="flex flex-col items-center gap-3 lg:flex-row">
         <Link href="/">
           <Image
             src={Logo}
             alt="logo"
-            className="w-[60px] h-[60px] lg:w-[80px] lg:h-[80px] mix-blend-multiply"
+            className="h-[60px] w-[60px] mix-blend-multiply lg:h-[80px] lg:w-[80px]"
           />
         </Link>
         <div
+          id="mobile-nav"
           className={`${
             open ? "flex" : "hidden lg:flex"
-          } flex-col justify-center gap-7 absolute left-0 top-0 bottom-0 right-0 bg-cyan-950 lg:bg-transparent lg:static lg:flex-row lg:gap-3 items-center z-10`}
-          onClick={() => setOpen(false)}
+          } fixed inset-0 z-50 flex-col bg-white lg:relative lg:inset-auto lg:z-auto lg:min-h-0 lg:flex-1 lg:flex-row lg:gap-3 lg:bg-transparent`}
         >
-          <Link href="/" onClick={() => setOpen(true)} className="uppercase">
-            {t("home")}
-          </Link>
-          <Link href="/programme" className="uppercase">
-            {t("program")}
-          </Link>
-          <Link href="/rsvp" className="uppercase">
-            {t("rsvp")}
-          </Link>
-          <Link href="/contact" className="uppercase">
-            {t("contact")}
-          </Link>
-          <Link href="/faq" className="uppercase">
-            {t("faq")}
-          </Link>
+          {/* Panneau mobile uniquement */}
+          <div className="flex flex-none items-center justify-between border-b border-slate-200 bg-white px-6 py-5 lg:hidden">
+            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-600">
+              Menu
+            </span>
+            <button
+              type="button"
+              className="flex cursor-pointer items-center justify-center rounded-xl p-2 text-slate-800 transition-colors hover:bg-slate-100"
+              onClick={() => setOpen(false)}
+              aria-label="Fermer le menu"
+            >
+              <IoCloseSharp className="text-3xl" aria-hidden />
+            </button>
+          </div>
 
-          {isAuth && (
-            <>
-              <Link href="/admin" className="uppercase">
-                Admin
-              </Link>
-              <Link href="/admin/addguest" className="uppercase">
-                Ajouter des invités
-              </Link>
-              <Link href="/admin/allguest" className="uppercase">
-                Tous les invités
-              </Link>
-            </>
-          )}
+          <nav
+            className="flex flex-1 flex-col items-stretch justify-center gap-3 overflow-y-auto px-6 pb-10 pt-4 lg:flex-initial lg:flex-row lg:items-center lg:gap-3 lg:overflow-visible lg:px-0 lg:py-0"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setOpen(false);
+            }}
+          >
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className={navItemClass}
+            >
+              {t("home")}
+            </Link>
+
+            <Link
+              href="/programme"
+              onClick={() => setOpen(false)}
+              className={navItemClass}
+            >
+              {t("program")}
+            </Link>
+
+            <Link
+              href="/rsvp"
+              onClick={() => setOpen(false)}
+              className={navItemClass}
+            >
+              {t("rsvp")}
+            </Link>
+
+            <Link
+              href="/contact"
+              onClick={() => setOpen(false)}
+              className={navItemClass}
+            >
+              {t("contact")}
+            </Link>
+
+            <Link
+              href="/faq"
+              onClick={() => setOpen(false)}
+              className={navItemClass}
+            >
+              {t("faq")}
+            </Link>
+
+            {isAuth && (
+              <>
+                <Link
+                  href="/admin"
+                  onClick={() => setOpen(false)}
+                  className={navItemClass}
+                >
+                  Admin
+                </Link>
+                <Link
+                  href="/admin/addguest"
+                  onClick={() => setOpen(false)}
+                  className={navItemClass}
+                >
+                  Ajouter des invités
+                </Link>
+                <Link
+                  href="/admin/allguest"
+                  onClick={() => setOpen(false)}
+                  className={navItemClass}
+                >
+                  Tous les invités
+                </Link>
+              </>
+            )}
+          </nav>
         </div>
       </div>
       <div className="flex gap-3">

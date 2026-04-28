@@ -4,6 +4,7 @@ import Title from "@/components/Title";
 import { Guest } from "@/types";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import Button from "@/components/Button";
 
 export default function PageAllGuest() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -110,9 +111,9 @@ export default function PageAllGuest() {
     <div className="p-6">
       <Title level={1}>Liste de tous les invités</Title>
 
-      <button onClick={() => exportGuestsToCSV(allGuests)}>
+      <Button onClick={() => exportGuestsToCSV(allGuests)}>
         Télécharger la liste
-      </button>
+      </Button>
 
       {allGuests.length === 0 ? (
         <p>Aucun invité trouvé.</p>
