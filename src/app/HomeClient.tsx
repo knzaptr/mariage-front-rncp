@@ -72,7 +72,7 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
         </Link>
       </div> */}
 
-      <section className="grid grid-cols-12 gap-3 md:gap-5 mt-7 ">
+      <section className="w-[80vw] mx-auto grid grid-cols-12 gap-3 md:gap-5 mt-7 ">
         <figure className="col-span-12 md:col-span-5 relative overflow-hidden bg-secondary aspect-[3/4] group">
           <img
             src="/ll3.JPG"

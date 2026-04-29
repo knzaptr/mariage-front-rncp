@@ -49,7 +49,7 @@ export default function ProgrammePage({
         })}
       </div>
 
-      <div className="bg-white h-[1px] lg:w-[70%]"></div>
+      <div className="bg-black h-[1px]"></div>
       <p className="text-right text-[45px] lg:text-[65px] capitalize">
         {t("place")}
       </p>

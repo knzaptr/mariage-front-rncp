@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-wine: #3b0d11;
-  --color-wine-700: #3b0d11b3;
+  --color-wine: #ED8D53;
+  --color-wine-700: #D68D76;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -59,7 +59,7 @@ body {
 }
 
 .back {
-  background: #3b0d11;
+  background:var(--color-wine);
   color: white;
   transform: rotateY(180deg);
 }
