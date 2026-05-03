@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/db";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { ContactTranslation } from "@/types";
@@ -55,6 +56,7 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  revalidatePath("/contact");
   return NextResponse.json(newContact, { status: 201 });
 }
 
@@ -120,6 +122,7 @@ export async function PUT(req: NextRequest) {
       include: { translations: true },
     });
 
+    revalidatePath("/contact");
     return NextResponse.json(updatedContacts);
   } catch (error) {
     console.error("❌ CONTACT PUT error:", error);
@@ -173,6 +176,7 @@ export async function DELETE(request: NextRequest) {
       where: { id },
     });
 
+    revalidatePath("/contact");
     return NextResponse.json(
       { message: "Contact supprimé avec succès" },
       { status: 200 },
