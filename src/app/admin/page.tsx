@@ -16,7 +16,6 @@ import Title from "@/components/Title";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import AddModal, { ModalType } from "@/components/Modal";
 import { useRouter } from "next/navigation";
-const router = useRouter();
 
 export default function PageAdmin() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -30,6 +29,7 @@ export default function PageAdmin() {
   const [modalType, setModalType] = useState<ModalType>(null);
 
   const adminToken = Cookies.get("adminToken");
+  const router = useRouter();
 
   useEffect(() => {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
