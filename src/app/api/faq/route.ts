@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { getFaqs } from "@/queries/faq";
+import { revalidatePath } from "next/cache";
 
 /**
  * GET /api/faq?lang=fr
@@ -51,6 +52,7 @@ export async function POST(req: Request) {
       orderBy: { language: "asc" },
     });
 
+    revalidatePath("/faq");
     return NextResponse.json(createdFaqs, { status: 201 });
   } catch (error) {
     console.error(error);
@@ -91,6 +93,7 @@ export async function PUT(req: NextRequest) {
       orderBy: { displayOrder: "asc" },
     });
 
+    revalidatePath("/faq");
     return NextResponse.json(updatedFaqs);
   } catch (error) {
     console.error("❌ FAQ PUT error:", error);
@@ -118,6 +121,7 @@ export async function DELETE(req: Request) {
       },
     });
 
+    revalidatePath("/faq");
     return NextResponse.json(
       { message: "FAQs FR/EN supprimées avec succès" },
       { status: 200 },

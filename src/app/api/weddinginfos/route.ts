@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { WeddingInfoTranslation } from "@/types";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { getWeddingInfo } from "@/queries/weddinginfo";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const weddingInfo = await getWeddingInfo();
@@ -81,5 +82,6 @@ export async function PUT(request: NextRequest) {
     },
   });
 
+  revalidatePath("/");
   return NextResponse.json(updatedWeddingInfo);
 }

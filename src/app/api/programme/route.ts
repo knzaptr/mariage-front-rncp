@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import { Activity, ActivityTranslation } from "@/types";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { getActivities } from "@/queries/programme";
-
+import { revalidatePath } from "next/cache";
 /**
  * GET /api/activities
  */
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  revalidatePath("/programme");
   return NextResponse.json(newActivity, { status: 201 });
 }
 
@@ -86,6 +87,7 @@ export async function PUT(request: NextRequest) {
     ),
   );
 
+  revalidatePath("/programme");
   return NextResponse.json(updatedActivities);
 }
 
@@ -122,6 +124,7 @@ export async function DELETE(request: NextRequest) {
       where: { id },
     });
 
+    revalidatePath("/programme");
     return NextResponse.json(
       { message: "Activité supprimée avec succès" },
       { status: 200 },

@@ -119,6 +119,7 @@ export default function PageAdmin() {
       }
 
       alert("Modification enregistrée !");
+      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Erreur lors de la sauvegarde.");
@@ -188,6 +189,7 @@ export default function PageAdmin() {
       setProg(updatedActivities);
 
       alert("Programme mis à jour avec succès ✅");
+      router.refresh();
     } catch (error) {
       console.error("❌ Erreur:", error);
       alert("Erreur lors de la mise à jour du programme");
@@ -227,6 +229,7 @@ export default function PageAdmin() {
       );
 
       alert("Activité supprimée avec succès ✅");
+      router.refresh();
     } catch (error) {
       console.error("❌ Erreur:", error);
       alert("Erreur lors de la suppression de l'activité");
@@ -270,6 +273,7 @@ export default function PageAdmin() {
       setFaqs(updatedFaqs);
 
       alert("FAQ mise à jour avec succès ✅");
+      router.refresh();
     } catch (error) {
       console.error("❌ Erreur:", error);
       alert("Erreur lors de la mise à jour de la FAQ");
@@ -303,6 +307,7 @@ export default function PageAdmin() {
     );
 
     alert("Question supprimée avec succès 🗑️");
+    router.refresh();
   };
 
   // CONTACTS
@@ -417,6 +422,7 @@ export default function PageAdmin() {
       );
 
       alert("Contact supprimé avec succès ✅");
+      router.refresh();
     } catch (error) {
       console.error("❌ Erreur:", error);
       alert("Erreur lors de la suppression du contact");
@@ -463,6 +469,7 @@ export default function PageAdmin() {
     setFaqs((prev) => [...prev, ...createdFaqs]);
 
     alert("FAQ ajoutée avec succès ✅");
+    router.refresh();
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -488,6 +495,7 @@ export default function PageAdmin() {
     const newActivity = await response.json();
     setProg([...prog, newActivity]);
     alert("Activité ajoutée avec succès ✅");
+    router.refresh();
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -530,6 +538,7 @@ export default function PageAdmin() {
     const newContact = await response.json();
     setContacts([...contacts, newContact]);
     alert("Contact ajouté avec succès ✅");
+    router.refresh();
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitNew = async (data: any) => {
