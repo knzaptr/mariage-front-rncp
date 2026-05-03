@@ -6,3 +6,5 @@ declare module "*.gif";
 declare module "*.svg";
 declare module "*.png";
 declare module "*.PNG";
+declare module "*.HEIC";
+declare module "*.heic";
