@@ -50,16 +50,16 @@ body {
   background: white;
   color: #3b0d11;
   text-align: center;
-  border-radius: 5px;
   backface-visibility: hidden;
   display: flex;
   justify-content: center; /* centrer horizontalement */
   align-items: center;
   padding: 20px;
+  border: 1px solid black;
 }
 
 .back {
-  background:var(--color-wine);
+  background:black;
   color: white;
   transform: rotateY(180deg);
 }
