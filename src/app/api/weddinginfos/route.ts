@@ -1,9 +1,9 @@
-// app/api/weddinginfo/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { WeddingInfoTranslation } from "@/types";
+import { jsonValidationError } from "@/lib/api/zod-response";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { getWeddingInfo } from "@/queries/weddinginfo";
+import { weddingInfoPutBodySchema } from "@/schemas/api";
 import { revalidatePath } from "next/cache";
 
 export async function GET() {
@@ -27,6 +27,10 @@ export async function PUT(request: NextRequest) {
   }
 
   const body = await request.json();
+  const parsed = weddingInfoPutBodySchema.safeParse(body);
+  if (!parsed.success) {
+    return jsonValidationError(parsed.error);
+  }
   const {
     translations,
     brideName,
@@ -34,7 +38,7 @@ export async function PUT(request: NextRequest) {
     venueLink,
     weddingDate,
     rsvpDeadline,
-  } = body;
+  } = parsed.data;
 
   // 1️⃣ Récupérer le WeddingInfo existant
   const weddingInfo = await prisma.weddingInfo.findFirst();
@@ -57,7 +61,7 @@ export async function PUT(request: NextRequest) {
       rsvpDeadline: rsvpDeadline ? new Date(rsvpDeadline) : undefined,
       translations: translations
         ? {
-            upsert: translations.map((t: WeddingInfoTranslation) => ({
+            upsert: translations.map((t) => ({
               where: {
                 weddingInfoId_language: {
                   weddingInfoId: weddingInfo.id,

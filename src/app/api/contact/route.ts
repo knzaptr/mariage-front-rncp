@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/db";
+import { jsonValidationError } from "@/lib/api/zod-response";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
-import { ContactTranslation } from "@/types";
+import {
+  contactPostFieldsSchema,
+  contactPutArraySchema,
+} from "@/schemas/api";
 
 import cloudinary from "@/lib/cloudinary";
 import convertToBase64 from "@/utils/convertToBase64";
@@ -32,19 +36,43 @@ export async function POST(request: NextRequest) {
     imageUrl = uploadResult.secure_url;
   }
 
-  // Récupérer les traductions depuis le formData
-  const translationsRaw = formData.get("translations") as string;
-  const translations = JSON.parse(translationsRaw);
+  const translationsRaw = formData.get("translations");
+  if (typeof translationsRaw !== "string") {
+    return NextResponse.json(
+      { error: "Champ translations manquant ou invalide" },
+      { status: 400 },
+    );
+  }
+  let translationsJson: unknown;
+  try {
+    translationsJson = JSON.parse(translationsRaw);
+  } catch {
+    return NextResponse.json(
+      { error: "translations n'est pas un JSON valide" },
+      { status: 400 },
+    );
+  }
+
+  const parsed = contactPostFieldsSchema.safeParse({
+    name: formData.get("name"),
+    phoneNumber: formData.get("phoneNumber"),
+    displayOrder: formData.get("displayOrder"),
+    translations: translationsJson,
+  });
+  if (!parsed.success) {
+    return jsonValidationError(parsed.error);
+  }
+  const { name, phoneNumber, displayOrder, translations } = parsed.data;
 
   // Créer le contact
   const newContact = await prisma.contact.create({
     data: {
-      name: formData.get("name") as string,
-      phoneNumber: formData.get("phoneNumber") as string,
-      displayOrder: Number(formData.get("displayOrder")),
+      name,
+      phoneNumber,
+      displayOrder,
       imageContact: imageUrl ? [imageUrl] : [],
       translations: {
-        create: translations.map((t: ContactTranslation) => ({
+        create: translations.map((t) => ({
           language: t.language,
           relationship: t.relationship || "",
           role: t.role || "",
@@ -72,11 +100,21 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: "Missing contacts" }, { status: 400 });
     }
 
-    const contacts = JSON.parse(contactsRaw);
-
-    if (!Array.isArray(contacts)) {
-      return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+    let contactsJson: unknown;
+    try {
+      contactsJson = JSON.parse(contactsRaw);
+    } catch {
+      return NextResponse.json(
+        { error: "contacts n'est pas un JSON valide" },
+        { status: 400 },
+      );
     }
+
+    const parsed = contactPutArraySchema.safeParse(contactsJson);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
+    }
+    const contacts = parsed.data;
 
     await Promise.all(
       contacts.map(async (contact) => {
@@ -103,7 +141,7 @@ export async function PUT(req: NextRequest) {
             displayOrder: contact.displayOrder,
             imageContact,
             translations: {
-              update: contact.translations.map((t: ContactTranslation) => ({
+              update: contact.translations.map((t) => ({
                 where: { id: t.id },
                 data: {
                   language: t.language,

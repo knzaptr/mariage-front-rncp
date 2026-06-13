@@ -1,23 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { jsonValidationError } from "@/lib/api/zod-response";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
+import { guestCreateBodySchema } from "@/schemas/api";
 
 export async function POST(req: NextRequest) {
   try {
     const admin = await isAuthenticated(req);
     if (admin instanceof NextResponse) return admin;
     const body = await req.json();
-    const { groupId, lastName, firstName, allowsPlusOne } = body;
-
-    if (!lastName || !firstName || !allowsPlusOne) {
-      return NextResponse.json(
-        {
-          message: "Missing lastName, firstName, allowsPlusOne 😗",
-        },
-        { status: 400 },
-      );
+    const parsed = guestCreateBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { groupId, lastName, firstName, allowsPlusOne } = parsed.data;
 
     const guestExist = await prisma.guest.findFirst({
       where: { lastName, firstName },
@@ -47,7 +43,8 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 },
     );
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Erreur serveur";
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

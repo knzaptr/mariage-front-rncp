@@ -1,6 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { jsonValidationError } from "@/lib/api/zod-response";
+import {
+  guestNameLookupSchema,
+  rsvpPutBodySchema,
+} from "@/schemas/api";
 
 export async function GET() {
   try {
@@ -14,21 +18,20 @@ export async function GET() {
     }
 
     return NextResponse.json(allGuests, { status: 201 });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Erreur serveur";
+    return NextResponse.json({ message }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { firstName, lastName } = await req.json();
-
-    if (!firstName || !lastName) {
-      return NextResponse.json(
-        { message: "Missing firstName or lastName" },
-        { status: 400 },
-      );
+    const body = await req.json();
+    const parsed = guestNameLookupSchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { firstName, lastName } = parsed.data;
 
     // 1️⃣ Trouver l’invité
     const guest = await prisma.guest.findFirst({
@@ -71,11 +74,11 @@ export async function POST(req: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const { group, guests } = body;
-
-    if (!group || !guests || !Array.isArray(guests)) {
-      return NextResponse.json({ error: "Données invalides" }, { status: 400 });
+    const parsed = rsvpPutBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { group, guests } = parsed.data;
 
     // Récupérer le groupe pour vérifier qu'il existe
     const existingGroup = await prisma.guestGroup.findFirst({

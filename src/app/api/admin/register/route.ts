@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { jsonValidationError } from "@/lib/api/zod-response";
+import { adminCredentialsSchema } from "@/schemas/api";
 import SHA256 from "crypto-js/sha256";
 import encBase64 from "crypto-js/enc-base64";
 import uid2 from "uid2";
@@ -7,14 +9,11 @@ import uid2 from "uid2";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, password } = body;
-
-    if (!email || !password) {
-      return NextResponse.json(
-        { message: "Missing email or password 😗" },
-        { status: 400 }
-      );
+    const parsed = adminCredentialsSchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { email, password } = parsed.data;
 
     const adminLogin = await prisma.admin.findUnique({
       where: { email },

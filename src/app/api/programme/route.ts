@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { Activity, ActivityTranslation } from "@/types";
+import { jsonValidationError } from "@/lib/api/zod-response";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { getActivities } from "@/queries/programme";
+import {
+  programmePostBodySchema,
+  programmePutBodySchema,
+} from "@/schemas/api";
 import { revalidatePath } from "next/cache";
 /**
  * GET /api/activities
@@ -18,14 +22,19 @@ export async function POST(request: NextRequest) {
   if (admin instanceof NextResponse) return admin;
 
   const body = await request.json();
+  const parsed = programmePostBodySchema.safeParse(body);
+  if (!parsed.success) {
+    return jsonValidationError(parsed.error);
+  }
+  const { time, displayOrder, translations } = parsed.data;
 
   // Créer l'activité avec ses traductions
   const newActivity = await prisma.activity.create({
     data: {
-      time: body.time,
-      displayOrder: body.displayOrder || 1,
+      time,
+      displayOrder: displayOrder ?? 1,
       translations: {
-        create: body.translations.map((t: ActivityTranslation) => ({
+        create: translations.map((t) => ({
           language: t.language,
           activityName: t.activityName,
         })),
@@ -45,25 +54,22 @@ export async function PUT(request: NextRequest) {
 
   if (admin instanceof NextResponse) return admin;
   const body = await request.json();
-  const { activities } = body;
-
-  if (!Array.isArray(activities)) {
-    return NextResponse.json(
-      { error: "Invalid activities payload" },
-      { status: 400 },
-    );
+  const parsed = programmePutBodySchema.safeParse(body);
+  if (!parsed.success) {
+    return jsonValidationError(parsed.error);
   }
+  const { activities } = parsed.data;
 
   // 🔐 Transaction pour tout mettre à jour proprement
   const updatedActivities = await prisma.$transaction(
-    activities.map((activity: Activity) =>
+    activities.map((activity) =>
       prisma.activity.update({
         where: { id: activity.id },
         data: {
           time: activity.time,
           displayOrder: activity.displayOrder,
           translations: {
-            upsert: activity.translations.map((t: ActivityTranslation) => ({
+            upsert: activity.translations.map((t) => ({
               where: {
                 activityId_language: {
                   activityId: activity.id,

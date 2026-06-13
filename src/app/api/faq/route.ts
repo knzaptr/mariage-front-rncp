@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { jsonValidationError } from "@/lib/api/zod-response";
 import { isAuthenticated } from "@/middlewares/isAuthenticated";
 import { getFaqs } from "@/queries/faq";
+import {
+  faqDeleteBodySchema,
+  faqPostBodySchema,
+  faqPutBodySchema,
+} from "@/schemas/api";
 import { revalidatePath } from "next/cache";
 
 /**
@@ -16,30 +22,15 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { displayOrder, translations } = body;
-
-    if (!displayOrder || !translations || !Array.isArray(translations)) {
-      return NextResponse.json(
-        { error: "displayOrder et translations requis" },
-        { status: 400 },
-      );
+    const parsed = faqPostBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
-
-    // Sécurité minimale
-    for (const t of translations) {
-      if (!t.language || !t.question || !t.answer) {
-        return NextResponse.json(
-          {
-            error: "Chaque traduction doit avoir language, question et answer",
-          },
-          { status: 400 },
-        );
-      }
-    }
+    const { displayOrder, translations } = parsed.data;
 
     await prisma.faq.createMany({
       data: translations.map((t) => ({
-        displayOrder: Number(displayOrder),
+        displayOrder,
         language: t.language,
         question: t.question,
         answer: t.answer,
@@ -48,7 +39,7 @@ export async function POST(req: Request) {
 
     // On renvoie le groupe créé
     const createdFaqs = await prisma.faq.findMany({
-      where: { displayOrder: Number(displayOrder) },
+      where: { displayOrder },
       orderBy: { language: "asc" },
     });
 
@@ -67,11 +58,12 @@ export async function PUT(req: NextRequest) {
   try {
     const admin = await isAuthenticated(req);
     if (admin instanceof NextResponse) return admin;
-    const { faqs } = await req.json();
-
-    if (!Array.isArray(faqs)) {
-      return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+    const body = await req.json();
+    const parsed = faqPutBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { faqs } = parsed.data;
 
     // 🔁 Mise à jour en boucle
     await Promise.all(
@@ -106,18 +98,16 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: Request) {
   try {
-    const { displayOrder } = await req.json();
-
-    if (!displayOrder) {
-      return NextResponse.json(
-        { error: "displayOrder requis" },
-        { status: 400 },
-      );
+    const body = await req.json();
+    const parsed = faqDeleteBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { displayOrder } = parsed.data;
 
     await prisma.faq.deleteMany({
       where: {
-        displayOrder: Number(displayOrder),
+        displayOrder,
       },
     });
 

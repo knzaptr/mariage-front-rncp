@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import { jsonValidationError } from "@/lib/api/zod-response";
+import { guestNameLookupSchema } from "@/schemas/api";
 
 export async function POST(req: Request) {
   try {
-    const { lastName, firstName } = await req.json();
-
-    if (!lastName || !firstName) {
-      return NextResponse.json(
-        { message: "Missing lastName or firstName 😗" },
-        { status: 400 }
-      );
+    const body = await req.json();
+    const parsed = guestNameLookupSchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    const { lastName, firstName } = parsed.data;
 
     const guestExist = await prisma.guest.findFirst({
       where: {

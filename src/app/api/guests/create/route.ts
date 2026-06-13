@@ -1,35 +1,33 @@
 // app/api/groups/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { GuestGroupCreate } from "@/types";
+import { jsonValidationError } from "@/lib/api/zod-response";
+import { guestGroupCreateBodySchema } from "@/schemas/api";
 
 export async function POST(request: NextRequest) {
   try {
-    const body: GuestGroupCreate = await request.json();
-
-    // Validation basique
-    if (!body.group || !body.guests || body.guests.length === 0) {
-      return NextResponse.json(
-        { error: "Le nom du groupe et au moins un invité sont requis" },
-        { status: 400 },
-      );
+    const body = await request.json();
+    const parsed = guestGroupCreateBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return jsonValidationError(parsed.error);
     }
+    let { group, guests } = parsed.data;
 
     // Vérifier si le groupe existe déjà
     const existingGroup = await prisma.guestGroup.findUnique({
-      where: { groupName: body.group },
+      where: { groupName: group },
     });
 
     if (existingGroup) {
-      body.group = `${body.group}_${Date.now()}`; // Ajouter un suffixe unique pour éviter les conflits
+      group = `${group}_${Date.now()}`; // Ajouter un suffixe unique pour éviter les conflits
     }
 
     // Créer le groupe avec ses invités en une seule transaction
     const newGroup = await prisma.guestGroup.create({
       data: {
-        groupName: body.group,
+        groupName: group,
         guests: {
-          create: body.guests.map((guest) => ({
+          create: guests.map((guest) => ({
             firstName: guest.firstName,
             lastName: guest.lastName,
             allowsPlusOne: guest.allowsPlusOne,
