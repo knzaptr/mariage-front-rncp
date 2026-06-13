@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/components/Input";
 import Cookies from "js-cookie";
+import { apiPath } from "@/lib/api-client";
 
 export default function PageAdmin() {
   const [email, setEmail] = useState("");
@@ -13,10 +14,9 @@ export default function PageAdmin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Empêche le rechargement de la page
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
     try {
-      const res = await fetch(`${baseUrl}/api/admin/login`, {
+      const res = await fetch(apiPath("admin/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

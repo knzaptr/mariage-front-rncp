@@ -16,9 +16,9 @@ import Title from "@/components/Title";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import AddModal, { ModalType } from "@/components/Modal";
 import { useRouter } from "next/navigation";
+import { apiPath } from "@/lib/api-client";
 
 export default function PageAdmin() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const [weddingInfos, setWeddingInfos] = useState<WeddingInfo | null>(null);
   const [prog, setProg] = useState<Activity[]>([]);
   const [faqs, setFaqs] = useState<Faq[]>([]);
@@ -32,28 +32,27 @@ export default function PageAdmin() {
   const router = useRouter();
 
   useEffect(() => {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     async function fetchHome() {
       try {
-        const res = await fetch(`${baseUrl}/api/weddinginfos`, {
+        const res = await fetch(apiPath("weddinginfos"), {
           method: "GET",
           cache: "no-store",
         });
         const weddinginfos = await res.json();
 
-        const resProg = await fetch(`${baseUrl}/api/programme`, {
+        const resProg = await fetch(apiPath("programme"), {
           method: "GET",
           cache: "no-store",
         });
         const progs = await resProg.json();
 
-        const resFaq = await fetch(`${baseUrl}/api/faq`, {
+        const resFaq = await fetch(apiPath("faq"), {
           method: "GET",
           cache: "no-store",
         });
         const faqs = await resFaq.json();
 
-        const resContacts = await fetch(`${baseUrl}/api/contact`, {
+        const resContacts = await fetch(apiPath("contact"), {
           method: "GET",
           cache: "no-store",
         });
@@ -105,7 +104,7 @@ export default function PageAdmin() {
     setSaving(true);
 
     try {
-      const res = await fetch(`${baseUrl}/api/weddinginfos`, {
+      const res = await fetch(apiPath("weddinginfos"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +167,7 @@ export default function PageAdmin() {
     setSaving(true);
 
     try {
-      const response = await fetch(`${baseUrl}/api/programme`, {
+      const response = await fetch(apiPath("programme"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -208,7 +207,7 @@ export default function PageAdmin() {
 
     try {
       const response = await fetch(
-        `${baseUrl}/api/programme?id=${activityId}`,
+        apiPath(`programme?id=${activityId}`),
         {
           method: "DELETE",
           headers: {
@@ -252,7 +251,7 @@ export default function PageAdmin() {
     setSaving(true);
 
     try {
-      const response = await fetch(`${baseUrl}/api/faq`, {
+      const response = await fetch(apiPath("faq"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -286,7 +285,7 @@ export default function PageAdmin() {
     const confirmDelete = confirm("Supprimer cette question en FR et EN ?");
     if (!confirmDelete) return;
 
-    const response = await fetch(`${baseUrl}/api/faq`, {
+    const response = await fetch(apiPath("faq"), {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -364,7 +363,7 @@ export default function PageAdmin() {
         }
       });
 
-      const response = await fetch(`${baseUrl}/api/contact`, {
+      const response = await fetch(apiPath("contact"), {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -403,7 +402,7 @@ export default function PageAdmin() {
     setSaving(true);
 
     try {
-      const response = await fetch(`${baseUrl}/api/contact?id=${contactId}`, {
+      const response = await fetch(apiPath(`contact?id=${contactId}`), {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${adminToken}`,
@@ -437,7 +436,7 @@ export default function PageAdmin() {
     const nextDisplayOrder =
       faqs.length > 0 ? Math.max(...faqs.map((f) => f.displayOrder)) + 1 : 1;
 
-    const response = await fetch(`${baseUrl}/api/faq`, {
+    const response = await fetch(apiPath("faq"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -474,7 +473,7 @@ export default function PageAdmin() {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitActivityNew = async (data: any) => {
-    const response = await fetch(`${baseUrl}/api/programme`, {
+    const response = await fetch(apiPath("programme"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -527,7 +526,7 @@ export default function PageAdmin() {
       formData.append("image", data.imageFile);
     }
 
-    const response = await fetch(`${baseUrl}/api/contact`, {
+    const response = await fetch(apiPath("contact"), {
       method: "POST",
       headers: { Authorization: `Bearer ${adminToken}` },
       body: formData,

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Carrousel from "@/components/Carrousel";
 import { useLanguage } from "@/context/LanguageContext";
 import Button from "@/components/Button";
+import { apiPath } from "@/lib/api-client";
 
 const RsvpPage = () => {
   const { t } = useLanguage();
@@ -15,7 +16,6 @@ const RsvpPage = () => {
   const [isInvited, setIsInvited] = useState<boolean>(false);
   const [foundGroup, setFoundGroup] = useState<GuestGroup | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   const updateGuest = (guestId: number, updates: Partial<Guest>): void => {
     setFoundGroup((prev) => {
@@ -125,7 +125,7 @@ const RsvpPage = () => {
     }
 
     try {
-      const response = await fetch(`${baseUrl}/api/guests`, {
+      const response = await fetch(apiPath("guests"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -159,7 +159,7 @@ const RsvpPage = () => {
     }
 
     try {
-      const response = await fetch(`${baseUrl}/api/guests/guest/search`, {
+      const response = await fetch(apiPath("guests/guest/search"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -188,10 +188,7 @@ const RsvpPage = () => {
 
   useEffect(() => {
     const fetchGroup = async () => {
-      const baseUrl =
-        process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-      const response = await fetch(`${baseUrl}/api/guests/`, {
+      const response = await fetch(apiPath("guests"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

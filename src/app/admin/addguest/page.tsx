@@ -3,10 +3,9 @@
 import Input from "@/components/Input";
 import { Guest } from "@/types";
 import { useState } from "react";
+import { apiPath } from "@/lib/api-client";
 
 const AddGuest = () => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
   const [guests, setGuests] = useState<Partial<Guest>[]>([
     { firstName: "", lastName: "", allowsPlusOne: false },
   ]);
@@ -58,7 +57,7 @@ const AddGuest = () => {
     const finalGroupName = `Famille ${firstLastName}`;
 
     try {
-      const response = await fetch(`${baseUrl}/api/guests/create`, {
+      const response = await fetch(apiPath("guests/create"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

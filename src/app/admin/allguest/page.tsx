@@ -5,10 +5,9 @@ import { Guest } from "@/types";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Button from "@/components/Button";
+import { apiPath } from "@/lib/api-client";
 
 export default function PageAllGuest() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
   const [loading, setLoading] = useState(true);
   const [allGuests, setAllGuests] = useState<Guest[]>([]);
   const adminToken = Cookies.get("adminToken");
@@ -16,7 +15,7 @@ export default function PageAllGuest() {
   useEffect(() => {
     const fetchAllGuests = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/guests`);
+        const response = await fetch(apiPath("guests"));
         if (!response.ok) {
           throw new Error("Failed to fetch guests");
         }
@@ -85,7 +84,7 @@ export default function PageAllGuest() {
 
   const deleteGuest = async (guestId: number) => {
     try {
-      const res = await fetch(`/api/guests/guest/${guestId}`, {
+      const res = await fetch(apiPath(`guests/guest/${guestId}`), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
