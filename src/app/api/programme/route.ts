@@ -45,7 +45,10 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  revalidatePath("/");
   revalidatePath("/programme");
+  revalidatePath("/faq");
+  revalidatePath("/contact");
   return NextResponse.json(newActivity, { status: 201 });
 }
 
@@ -93,7 +96,10 @@ export async function PUT(request: NextRequest) {
     ),
   );
 
+  revalidatePath("/");
   revalidatePath("/programme");
+  revalidatePath("/faq");
+  revalidatePath("/contact");
   return NextResponse.json(updatedActivities);
 }
 
@@ -130,7 +136,10 @@ export async function DELETE(request: NextRequest) {
       where: { id },
     });
 
+    revalidatePath("/");
     revalidatePath("/programme");
+    revalidatePath("/faq");
+    revalidatePath("/contact");
     return NextResponse.json(
       { message: "Activité supprimée avec succès" },
       { status: 200 },

@@ -43,7 +43,10 @@ export async function POST(req: Request) {
       orderBy: { language: "asc" },
     });
 
+    revalidatePath("/");
+    revalidatePath("/programme");
     revalidatePath("/faq");
+    revalidatePath("/contact");
     return NextResponse.json(createdFaqs, { status: 201 });
   } catch (error) {
     console.error(error);
@@ -85,7 +88,10 @@ export async function PUT(req: NextRequest) {
       orderBy: { displayOrder: "asc" },
     });
 
+    revalidatePath("/");
+    revalidatePath("/programme");
     revalidatePath("/faq");
+    revalidatePath("/contact");
     return NextResponse.json(updatedFaqs);
   } catch (error) {
     console.error("❌ FAQ PUT error:", error);
@@ -111,7 +117,10 @@ export async function DELETE(req: Request) {
       },
     });
 
+    revalidatePath("/");
+    revalidatePath("/programme");
     revalidatePath("/faq");
+    revalidatePath("/contact");
     return NextResponse.json(
       { message: "FAQs FR/EN supprimées avec succès" },
       { status: 200 },

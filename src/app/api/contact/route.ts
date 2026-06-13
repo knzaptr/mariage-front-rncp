@@ -84,6 +84,9 @@ export async function POST(request: NextRequest) {
     },
   });
 
+  revalidatePath("/");
+  revalidatePath("/programme");
+  revalidatePath("/faq");
   revalidatePath("/contact");
   return NextResponse.json(newContact, { status: 201 });
 }
@@ -160,6 +163,9 @@ export async function PUT(req: NextRequest) {
       include: { translations: true },
     });
 
+    revalidatePath("/");
+    revalidatePath("/programme");
+    revalidatePath("/faq");
     revalidatePath("/contact");
     return NextResponse.json(updatedContacts);
   } catch (error) {
@@ -214,6 +220,9 @@ export async function DELETE(request: NextRequest) {
       where: { id },
     });
 
+    revalidatePath("/");
+    revalidatePath("/programme");
+    revalidatePath("/faq");
     revalidatePath("/contact");
     return NextResponse.json(
       { message: "Contact supprimé avec succès" },

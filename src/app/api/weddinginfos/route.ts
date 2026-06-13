@@ -87,5 +87,8 @@ export async function PUT(request: NextRequest) {
   });
 
   revalidatePath("/");
+  revalidatePath("/programme");
+  revalidatePath("/faq");
+  revalidatePath("/contact");
   return NextResponse.json(updatedWeddingInfo);
 }
