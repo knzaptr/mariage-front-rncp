@@ -19,58 +19,6 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
         <span className="text-end mr-[17%] lg:mr-[25%]">{home.groomName}</span>
       </Title>
       <Countdown targetDate={home.weddingDate.toString()} />
-      {/* <p className="text-[25px] text-center pt-6 px-4 italic">
-        {t("rdvwedding")}{" "}
-        {new Date(home.weddingDate).toLocaleDateString(
-          language === "fr" ? "fr-FR" : "en-US",
-          {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          },
-        )}
-      </p> */}
-
-      {/* <div className="grid grid-cols-2 grid-rows-3 gap-4 my-7 text-[21px] text-white md:grid-cols-3 md:grid-rows-2">
-        <div className="row-span-2 md:col-span-1 md:row-span-2 md:h-[400px] bg-wine p-3 content-center text-center">
-          <Image
-            src="/ll3.JPG"
-            alt="logo"
-            width={400}
-            height={400}
-            className="w-[100%] h-[100%] object-cover"
-          />
-        </div>
-
-        <div className="md:row-start-auto bg-wine p-3 content-center text-center">
-          <Link href="/rsvp">
-            {t("rvspdeadline")}{" "}
-            {new Date(home.rsvpDeadline).toLocaleDateString(
-              language === "fr" ? "fr-FR" : "en-US",
-              {
-                weekday: "long",
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              },
-            )}
-          </Link>
-        </div>
-        <div className="col-start-2 md:col-start-2 bg-wine p-3 content-center text-center">
-          <Link href="/faq"> {t("questionprompt")}</Link>
-        </div>
-        <Link
-          href={home.venueLink || "#"}
-          className="col-span-2 row-start-3 md:row-span-2 md:col-start-3 md:row-start-1 p-3 content-center text-center underline bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(59, 13, 17,0.93), rgba(59, 13, 17,0.93)), url('/map.jpeg')",
-          }}
-        >
-          {translation?.venueAddress}
-        </Link>
-      </div> */}
 
       <section className="w-[80vw] mx-auto grid grid-cols-12 gap-3 md:gap-5 mt-7 ">
         <figure className="col-span-12 md:col-span-5 relative overflow-hidden bg-secondary aspect-[3/4] group">
@@ -130,29 +78,40 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
       </section>
 
       <section className="w-[80vw] mx-auto mt-16 md:mt-24 border-t border-b border-glass-edge py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
-        {[
-          { k: "Date", v: "20.06.2026" },
-          { k: "Cérémonie", v: "15:00" },
-          { k: "Lieu", v: "Huis Van Wonterghem" },
-        ].map((item) => (
-          <div key={item.k} className="flex flex-col">
-            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-2">
-              {item.k}
-            </span>
-            <span className="font-display text-xl md:text-2xl font-light tracking-tight">
-              {item.v}
-            </span>
-          </div>
-        ))}
-      </section>
+  {[
+    {
+      k: t("date"),
+      v: new Date(home.weddingDate).toLocaleDateString(
+        language === "fr" ? "fr-FR" : "en-GB",
+        { day: "2-digit", month: "2-digit", year: "numeric" }
+      ).replace(/\//g, "."),
+    },
+    { k: t("ceremony"), v: "15:00" },
+    { k: t("venue"), v: translation?.venueAddress },
+  ].map((item) => (
+    <div key={item.k} className="flex flex-col">
+      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-2">
+        {item.k}
+      </span>
+      <span className="font-display text-xl md:text-2xl font-light tracking-tight">
+        {item.v}
+      </span>
+    </div>
+  ))}
+</section>
 
       {/* CTA */}
       <section className="w-[80vw] mx-auto mt-16 md:mt-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         <div className="max-w-md">
-          <h2 className="text-3xl md:text-4xl font-light tracking-tight text-balance">
-            Confirmez votre présence avant le{" "}
-            <span className="font-mono text-2xl md:text-3xl">01.04.2026</span>.
-          </h2>
+        <h2 className="text-3xl md:text-4xl font-light tracking-tight text-balance">
+  {t("confirmrsvp")}{" "}
+  <span className="font-mono text-2xl md:text-3xl">
+    {new Date(home.rsvpDeadline).toLocaleDateString(
+      language === "fr" ? "fr-FR" : "en-GB",
+      { day: "2-digit", month: "2-digit", year: "numeric" }
+    ).replace(/\//g, ".")}
+  </span>.
+</h2>
         </div>
         <a
           href="/rsvp"
