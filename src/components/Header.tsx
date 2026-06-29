@@ -188,11 +188,7 @@ const Header = () => {
         </div>
       </div>
       <div className="flex gap-3">
-        {!isAuth ? (
-          <Link href="/login" className="uppercase">
-            Admin
-          </Link>
-        ) : (
+        {isAuth && (
           <button
             onClick={handleLogout}
             className="uppercase bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
