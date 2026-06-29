@@ -19,7 +19,10 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900 antialiased">
+      <body
+        className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-slate-900 antialiased"
+        suppressHydrationWarning
+      >
         <div className="mx-auto pt-8 flex flex-col justify-between">
           <LanguageProvider>
             <Header />
