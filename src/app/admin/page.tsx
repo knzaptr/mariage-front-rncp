@@ -18,6 +18,25 @@ import AddModal, { ModalType } from "@/components/Modal";
 import { useRouter } from "next/navigation";
 import { apiPath } from "@/lib/api-client";
 
+const pageStateClass =
+  "flex min-h-screen items-center justify-center bg-slate-50 px-4 text-center text-slate-600";
+const sectionClass =
+  "rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6";
+const sectionHeaderClass =
+  "mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between";
+const fieldClass = "space-y-2";
+const labelClass = "block text-sm font-medium text-slate-700";
+const inputClass =
+  "h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-slate-400";
+const disabledInputClass =
+  "h-10 w-full rounded-lg border border-slate-200 bg-slate-100 px-3 text-sm uppercase text-slate-500";
+const primaryButtonClass =
+  "inline-flex w-full items-center justify-center rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto";
+const addButtonClass =
+  "inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50";
+const dangerIconButtonClass =
+  "inline-flex h-10 w-10 items-center justify-center rounded-lg border border-red-100 bg-red-50 text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50";
+
 export default function PageAdmin() {
   const [weddingInfos, setWeddingInfos] = useState<WeddingInfo | null>(null);
   const [prog, setProg] = useState<Activity[]>([]);
@@ -32,6 +51,9 @@ export default function PageAdmin() {
   const router = useRouter();
 
   useEffect(() => {
+    if(!adminToken) {
+      router.push("/login")
+    }
     async function fetchHome() {
       try {
         const res = await fetch(apiPath("weddinginfos"), {
@@ -72,10 +94,18 @@ export default function PageAdmin() {
     fetchHome();
   }, []);
 
-  if (loading) return <p>Chargement…</p>;
-  if (!weddingInfos) return <p>Erreur de chargement Wedding Infos</p>;
-  if (!prog) return <p>Erreur de chargement Programmation</p>;
-  if (!faqs) return <p>Erreur de chargement FAQ</p>;
+  if (loading) return <p className={pageStateClass}>Chargement…</p>;
+  if (!weddingInfos) {
+    return (
+      <p className={pageStateClass}>Erreur de chargement Wedding Infos</p>
+    );
+  }
+  if (!prog) {
+    return (
+      <p className={pageStateClass}>Erreur de chargement Programmation</p>
+    );
+  }
+  if (!faqs) return <p className={pageStateClass}>Erreur de chargement FAQ</p>;
 
   // HOME
   const handleChangeHome = (key: keyof WeddingInfo, value: string) => {
@@ -574,392 +604,471 @@ export default function PageAdmin() {
   }, {});
 
   return (
-    <>
-      <Title level={1} className="md:text-5xl p-10">
-        Modifications des informations
-      </Title>
-      <div className="max-w-5xl mx-auto p-6">
-        <Title level={2} className="text-4xl">
-          Page Home
-        </Title>
-        <form onSubmit={handleSubmitHome} className="space-y-4 p-5">
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Nom de la mariée
-            </label>
-            <Input
-              type="text"
-              value={weddingInfos.brideName}
-              onChange={(e) => handleChangeHome("brideName", e.target.value)}
-              placeholder="Prénom de la mariée"
-              className="w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Nom du marié
-            </label>
-            <Input
-              type="text"
-              value={weddingInfos.groomName}
-              onChange={(e) => handleChangeHome("groomName", e.target.value)}
-              placeholder="Prénom du marié"
-              className="w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Date du mariage
-            </label>
-            <Input
-              type="date"
-              value={
-                weddingInfos.weddingDate
-                  ? new Date(weddingInfos.weddingDate)
-                      .toISOString()
-                      .split("T")[0]
-                  : ""
-              }
-              onChange={(e) => handleChangeHome("weddingDate", e.target.value)}
-              className="w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Deadline RSVP
-            </label>
-            <Input
-              type="date"
-              value={
-                weddingInfos.rsvpDeadline
-                  ? new Date(weddingInfos.rsvpDeadline)
-                      .toISOString()
-                      .split("T")[0]
-                  : ""
-              }
-              onChange={(e) => handleChangeHome("rsvpDeadline", e.target.value)}
-              className="w-full"
-            />
-          </div>
-
-          {weddingInfos.translations?.map((t) => (
-            <div key={t.id} className="flex justify-between">
-              <select
-                value={t.language}
-                className="w-[10%]"
-                onChange={(e) =>
-                  handleChangeHomeTranslateById(t.id, {
-                    language: e.target.value as Language,
-                  })
-                }
-              >
-                <option value="fr">FR</option>
-                <option value="en">EN</option>
-              </select>
-              <Input
-                type="text"
-                value={t.description}
-                className="w-[25%]"
-                onChange={(e) =>
-                  handleChangeHomeTranslateById(t.id, {
-                    description: e.target.value,
-                  })
-                }
-              />
-              <Input
-                type="text"
-                value={t.venueAddress}
-                className="w-[50%]"
-                onChange={(e) =>
-                  handleChangeHomeTranslateById(t.id, {
-                    venueAddress: e.target.value,
-                  })
-                }
-              />
-            </div>
-          ))}
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Lien vers le lieu du mariage
-            </label>
-            <Input
-              type="text"
-              value={weddingInfos.venueLink || ""}
-              onChange={(e) => handleChangeHome("venueLink", e.target.value)}
-              placeholder="Lien vers le lieu du mariage"
-              className="w-full"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+    <main className="min-h-screen px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
+        <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200 sm:p-8">
+          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Administration
+          </p>
+          <Title
+            level={1}
+            className="px-0 text-4xl leading-tight text-slate-900 sm:text-5xl md:text-6xl"
           >
-            {saving ? "Sauvegarde..." : "Enregistrer"}
-          </button>
-        </form>
-        <Title level={2} className="text-4xl">
-          Programme
-        </Title>
-        <form onSubmit={handleSubmitProgramme} className="space-y-4 p-5">
-          {prog.map((p, index) => (
-            <div key={p.id} className="relative">
-              <div>
-                Activité {index + 1}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteActivity(p.id)}
-                  disabled={saving}
-                  className="color-red px-4 py-2 rounded hover:bg-red-600 disabled:opacity-50"
-                >
-                  <MdOutlineDeleteForever />
-                </button>
-              </div>
-              <div className="flex justify-between">
+            Modifications des informations
+          </Title>
+        </div>
+
+        <section className={sectionClass}>
+          <div className={sectionHeaderClass}>
+            <Title level={2} className="text-3xl text-slate-900 sm:text-4xl">
+              Page Home
+            </Title>
+          </div>
+
+          <form onSubmit={handleSubmitHome} className="space-y-5">
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className={fieldClass}>
+                <label className={labelClass}>Nom de la mariée</label>
                 <Input
-                  type="time"
-                  value={p.time}
+                  type="text"
+                  value={weddingInfos.brideName}
                   onChange={(e) =>
-                    handleActivityChange(p.id, "time", e.target.value)
+                    handleChangeHome("brideName", e.target.value)
                   }
-                  className="w-[10%]"
+                  placeholder="Prénom de la mariée"
+                  className={inputClass}
                 />
               </div>
-              {p.translations?.map((t) => (
-                <div key={t.id} className="flex justify-between">
-                  <Input
-                    type="text"
+
+              <div className={fieldClass}>
+                <label className={labelClass}>Nom du marié</label>
+                <Input
+                  type="text"
+                  value={weddingInfos.groomName}
+                  onChange={(e) =>
+                    handleChangeHome("groomName", e.target.value)
+                  }
+                  placeholder="Prénom du marié"
+                  className={inputClass}
+                />
+              </div>
+
+              <div className={fieldClass}>
+                <label className={labelClass}>Date du mariage</label>
+                <Input
+                  type="date"
+                  value={
+                    weddingInfos.weddingDate
+                      ? new Date(weddingInfos.weddingDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    handleChangeHome("weddingDate", e.target.value)
+                  }
+                  className={inputClass}
+                />
+              </div>
+
+              <div className={fieldClass}>
+                <label className={labelClass}>Deadline RSVP</label>
+                <Input
+                  type="date"
+                  value={
+                    weddingInfos.rsvpDeadline
+                      ? new Date(weddingInfos.rsvpDeadline)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) =>
+                    handleChangeHome("rsvpDeadline", e.target.value)
+                  }
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {weddingInfos.translations?.map((t) => (
+                <div
+                  key={t.id}
+                  className="grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:grid-cols-[100px_1fr]"
+                >
+                  <select
                     value={t.language}
-                    className="w-[10%]"
-                    disabled
+                    className={inputClass}
+                    onChange={(e) =>
+                      handleChangeHomeTranslateById(t.id, {
+                        language: e.target.value as Language,
+                      })
+                    }
+                  >
+                    <option value="fr">FR</option>
+                    <option value="en">EN</option>
+                  </select>
+                  <div>
+                  <Input
+                    type="text"
+                    value={t.description}
+                    className={inputClass}
+                    onChange={(e) =>
+                      handleChangeHomeTranslateById(t.id, {
+                        description: e.target.value,
+                      })
+                    }
                   />
                   <Input
                     type="text"
-                    value={t.activityName}
+                    value={t.venueAddress}
+                    className={inputClass}
                     onChange={(e) =>
-                      handleTranslationChange(
-                        p.id,
-                        t.id,
-                        "activityName",
-                        e.target.value,
-                      )
+                      handleChangeHomeTranslateById(t.id, {
+                        venueAddress: e.target.value,
+                      })
                     }
-                    className="w-[80%]"
                   />
+                  </div>
                 </div>
               ))}
             </div>
-          ))}
 
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {saving ? "Sauvegarde..." : "Enregistrer"}
-          </button>
-        </form>
-        <button
-          onClick={() => setModalType("activity")}
-          className="mb-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-        >
-          + Ajouter une activité
-        </button>
-        <Title level={2} className="text-4xl">
-          FAQ
-        </Title>
-        <form onSubmit={handleSubmitFaq} className="space-y-6 p-5">
-          {Object.entries(faqsGrouped || {}).map(
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ([displayOrder, group]: any, index: number) => (
-              <div
-                key={displayOrder}
-                className="border rounded-lg p-4 bg-gray-50 space-y-4"
+            <div className={fieldClass}>
+              <label className={labelClass}>Lien vers le lieu du mariage</label>
+              <Input
+                type="text"
+                value={weddingInfos.venueLink || ""}
+                onChange={(e) => handleChangeHome("venueLink", e.target.value)}
+                placeholder="Lien vers le lieu du mariage"
+                className={inputClass}
+              />
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={saving}
+                className={primaryButtonClass}
               >
-                <button
-                  type="button"
-                  onClick={() => handleDeleteFaqGroup(displayOrder)}
-                  className="text-red-600 hover:text-red-700 text-sm font-medium"
-                >
-                  Supprimer la question
-                </button>
+                {saving ? "Sauvegarde..." : "Enregistrer"}
+              </button>
+            </div>
+          </form>
+        </section>
 
-                {/* Header */}
-                <div className="font-semibold text-gray-700">
-                  Question #{index + 1}
+        <section className={sectionClass}>
+          <div className={sectionHeaderClass}>
+            <Title level={2} className="text-3xl text-slate-900 sm:text-4xl">
+              Programme
+            </Title>
+            <button
+              type="button"
+              onClick={() => setModalType("activity")}
+              className={addButtonClass}
+            >
+              + Ajouter une activité
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmitProgramme} className="space-y-5">
+            {prog.map((p, index) => (
+              <div
+                key={p.id}
+                className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <p className="font-semibold text-slate-800">
+                    Activité {index + 1}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteActivity(p.id)}
+                    disabled={saving}
+                    className={dangerIconButtonClass}
+                    aria-label={`Supprimer l'activité ${index + 1}`}
+                  >
+                    <MdOutlineDeleteForever />
+                  </button>
                 </div>
 
-                {/* FR / EN */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                  {group.map((f: any) => {
-                    const index = faqs.findIndex(
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      (faq: any) => faq.id === f.id,
-                    );
+                <div className="grid gap-3 sm:grid-cols-[140px_1fr]">
+                  <Input
+                    type="time"
+                    value={p.time}
+                    onChange={(e) =>
+                      handleActivityChange(p.id, "time", e.target.value)
+                    }
+                    className={inputClass}
+                  />
+                </div>
 
-                    return (
-                      <div
-                        key={f.id}
-                        className="space-y-2 border rounded-md p-3 bg-white"
-                      >
-                        <div className="text-sm font-medium text-gray-600 uppercase">
-                          {f.language}
-                        </div>
-
-                        <Input
-                          type="text"
-                          className="w-full"
-                          value={f.question}
-                          onChange={(e) =>
-                            handleFaqChange(index, "question", e.target.value)
-                          }
-                        />
-
-                        <Input
-                          type="text"
-                          className="w-full"
-                          value={f.answer}
-                          onChange={(e) =>
-                            handleFaqChange(index, "answer", e.target.value)
-                          }
-                        />
-                      </div>
-                    );
-                  })}
+                <div className="space-y-3">
+                  {p.translations?.map((t) => (
+                    <div
+                      key={t.id}
+                      className="grid gap-3 sm:grid-cols-[100px_1fr]"
+                    >
+                      <Input
+                        type="text"
+                        value={t.language}
+                        className={disabledInputClass}
+                        disabled
+                      />
+                      <Input
+                        type="text"
+                        value={t.activityName}
+                        onChange={(e) =>
+                          handleTranslationChange(
+                            p.id,
+                            t.id,
+                            "activityName",
+                            e.target.value,
+                          )
+                        }
+                        className={inputClass}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
-            ),
-          )}
+            ))}
 
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {saving ? "Sauvegarde..." : "Enregistrer"}
-          </button>
-        </form>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={saving}
+                className={primaryButtonClass}
+              >
+                {saving ? "Sauvegarde..." : "Enregistrer"}
+              </button>
+            </div>
+          </form>
+        </section>
 
-        {Object.keys(faqsGrouped).length === 10 && (
-          <p>Limite de 10 questions atteinte.</p>
-        )}
-        <button
-          onClick={() => setModalType("faq")}
-          disabled={Object.keys(faqsGrouped).length === 10}
-          className={`mb-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 ${
-            Object.keys(faqsGrouped).length === 10 &&
-            "opacity-50 cursor-not-allowed hover:bg-green-600"
-          }`}
-        >
-          + Ajouter une FAQ
-        </button>
+        <section className={sectionClass}>
+          <div className={sectionHeaderClass}>
+            <Title level={2} className="text-3xl text-slate-900 sm:text-4xl">
+              FAQ
+            </Title>
+            <div className="space-y-2 sm:text-right">
+              {Object.keys(faqsGrouped).length === 10 && (
+                <p className="text-sm text-amber-700">
+                  Limite de 10 questions atteinte.
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setModalType("faq")}
+                disabled={Object.keys(faqsGrouped).length === 10}
+                className={addButtonClass}
+              >
+                + Ajouter une FAQ
+              </button>
+            </div>
+          </div>
 
-        <div className="flex justify-between">
-          <Title level={2} className="text-4xl">
-            Contacts
-          </Title>
+          <form onSubmit={handleSubmitFaq} className="space-y-5">
+            {Object.entries(faqsGrouped || {}).map(
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ([displayOrder, group]: any, index: number) => (
+                <div
+                  key={displayOrder}
+                  className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="font-semibold text-slate-800">
+                      Question #{index + 1}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteFaqGroup(displayOrder)}
+                      className="text-left text-sm font-semibold text-red-600 transition hover:text-red-700 sm:text-right"
+                    >
+                      Supprimer la question
+                    </button>
+                  </div>
 
-          <div className="flex gap-2">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {group.map((f: any) => {
+                      const index = faqs.findIndex(
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        (faq: any) => faq.id === f.id,
+                      );
+
+                      return (
+                        <div
+                          key={f.id}
+                          className="space-y-3 rounded-xl border border-slate-200 bg-white p-4"
+                        >
+                          <div className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                            {f.language}
+                          </div>
+
+                          <Input
+                            type="text"
+                            className={inputClass}
+                            value={f.question}
+                            onChange={(e) =>
+                              handleFaqChange(index, "question", e.target.value)
+                            }
+                          />
+
+                          <Input
+                            type="text"
+                            className={inputClass}
+                            value={f.answer}
+                            onChange={(e) =>
+                              handleFaqChange(index, "answer", e.target.value)
+                            }
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ),
+            )}
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={saving}
+                className={primaryButtonClass}
+              >
+                {saving ? "Sauvegarde..." : "Enregistrer"}
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section className={sectionClass}>
+          <div className={sectionHeaderClass}>
+            <Title level={2} className="text-3xl text-slate-900 sm:text-4xl">
+              Contacts
+            </Title>
             <button
+              type="button"
               onClick={() => setModalType("contact")}
-              className="mb-4 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+              className={addButtonClass}
             >
               + Ajouter un contact
             </button>
           </div>
-        </div>
-        <form onSubmit={handleSubmitContact}>
-          {contacts.map((contact) => (
-            <div key={contact.id} className="mb-4 p-4 border rounded relative">
-              <button
-                type="button"
-                onClick={() => handleDeleteContact(contact.id)}
-                disabled={saving}
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 disabled:opacity-50 absolute right-4"
-              >
-                <MdOutlineDeleteForever />
-              </button>
-              <Input
-                type="text"
-                value={contact.name}
-                className="mb-2 w-full"
-                onChange={(e) =>
-                  handleContactChange(contact.id, "name", e.target.value)
-                }
-              />
-              <Input
-                type="text"
-                value={contact.phoneNumber}
-                className="mb-2 w-full"
-                onChange={(e) =>
-                  handleContactChange(contact.id, "phoneNumber", e.target.value)
-                }
-              />
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
 
-                  setContacts((prev) =>
-                    prev.map((c) =>
-                      c.id === contact.id ? { ...c, newImageFile: file } : c,
-                    ),
-                  );
-                }}
-              />
-              {contact.translations?.map((t) => (
-                <div key={t.id} className="flex justify-between">
+          <form onSubmit={handleSubmitContact} className="space-y-5">
+            {contacts.map((contact) => (
+              <div
+                key={contact.id}
+                className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-4"
+              >
+                <div className="flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteContact(contact.id)}
+                    disabled={saving}
+                    className={dangerIconButtonClass}
+                    aria-label={`Supprimer le contact ${contact.name}`}
+                  >
+                    <MdOutlineDeleteForever />
+                  </button>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
                   <Input
                     type="text"
-                    value={t.language}
-                    className="w-[10%]"
-                    disabled
-                  />
-                  <Input
-                    type="text"
-                    value={t.relationship}
-                    className="w-[80%]"
+                    value={contact.name}
+                    className={inputClass}
                     onChange={(e) =>
-                      handleContactTranslationChange(
-                        contact.id,
-                        t.id,
-                        "relationship",
-                        e.target.value,
-                      )
+                      handleContactChange(contact.id, "name", e.target.value)
                     }
                   />
                   <Input
                     type="text"
-                    value={t.role}
-                    className="w-[80%]"
+                    value={contact.phoneNumber}
+                    className={inputClass}
                     onChange={(e) =>
-                      handleContactTranslationChange(
+                      handleContactChange(
                         contact.id,
-                        t.id,
-                        "role",
+                        "phoneNumber",
                         e.target.value,
                       )
                     }
                   />
                 </div>
-              ))}
+
+                <Input
+                  type="file"
+                  accept="image/*"
+                  className="w-full rounded-lg border border-dashed border-slate-300 bg-white px-3 py-2 text-sm text-slate-600 file:mr-4 file:rounded-md file:border-0 file:bg-slate-900 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-slate-700"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    setContacts((prev) =>
+                      prev.map((c) =>
+                        c.id === contact.id ? { ...c, newImageFile: file } : c,
+                      ),
+                    );
+                  }}
+                />
+
+                <div className="space-y-3">
+                  {contact.translations?.map((t) => (
+                    <div
+                      key={t.id}
+                      className="grid gap-3 md:grid-cols-[100px_1fr_1fr]"
+                    >
+                      <Input
+                        type="text"
+                        value={t.language}
+                        className={disabledInputClass}
+                        disabled
+                      />
+                      <Input
+                        type="text"
+                        value={t.relationship}
+                        className={inputClass}
+                        onChange={(e) =>
+                          handleContactTranslationChange(
+                            contact.id,
+                            t.id,
+                            "relationship",
+                            e.target.value,
+                          )
+                        }
+                      />
+                      <Input
+                        type="text"
+                        value={t.role}
+                        className={inputClass}
+                        onChange={(e) =>
+                          handleContactTranslationChange(
+                            contact.id,
+                            t.id,
+                            "role",
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={saving}
+                className={primaryButtonClass}
+              >
+                {saving ? "Sauvegarde..." : "Enregistrer"}
+              </button>
             </div>
-          ))}
-          <button
-            type="submit"
-            disabled={saving}
-            className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {saving ? "Sauvegarde..." : "Enregistrer"}
-          </button>
-        </form>
+          </form>
+        </section>
       </div>
 
       <AddModal
@@ -968,6 +1077,6 @@ export default function PageAdmin() {
         onClose={() => setModalType(null)}
         onSubmit={handleSubmitNew}
       />
-    </>
+    </main>
   );
 }
