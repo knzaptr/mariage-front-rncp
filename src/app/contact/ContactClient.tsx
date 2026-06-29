@@ -31,7 +31,7 @@ export default function ContactClient({ contact }: { contact: Contact[] }) {
               >
                 <div className="p-8 md:p-10 flex flex-col h-full">
                   <div className="flex justify-between items-start mb-10 md:mb-14">
-                    <div className="size-20 md:size-24 bg-secondary overflow-hidden border border-glass-edge grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <div className="size-20 md:size-24 bg-secondary overflow-hidden border border-glass-edge transition-all duration-700">
                       <img
                         src={person.imageContact?.[0]}
                         alt={person.name}

@@ -3,8 +3,6 @@ import Countdown from "@/components/Countdown";
 import Title from "@/components/Title";
 import { useLanguage } from "@/context/LanguageContext";
 import { WeddingInfo } from "@/types";
-import Link from "next/link";
-import Image from "next/image";
 import { GoArrowUpRight } from "react-icons/go";
 
 export default function HomeClient({ home }: { home: WeddingInfo }) {
@@ -20,13 +18,14 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
       </Title>
       <Countdown targetDate={home.weddingDate.toString()} />
 
+      {/* Informations du mariage */}
       <section className="w-[80vw] mx-auto grid grid-cols-12 gap-3 md:gap-5 mt-7 ">
         <figure className="col-span-12 md:col-span-5 relative overflow-hidden bg-secondary aspect-[3/4] group">
           <img
             src="/ll3.JPG"
             alt="Portrait éditorial du couple"
             loading="lazy"
-            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-105"
           />
           <figcaption className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-widest text-background bg-ink/70 backdrop-blur px-2 py-1">
             01 — {t("couple")}
@@ -39,7 +38,7 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
               src="/pexels4-KPl9CBmh.jpg"
               alt="Bouquet de pivoines"
               loading="lazy"
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-105"
+              className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-105"
             />
             <figcaption className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-widest text-background bg-ink/70 backdrop-blur px-2 py-1">
               02 — {t("warmcolors")}
@@ -69,7 +68,7 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
             src="/lieu.png"
             alt="Architecture du lieu"
             loading="lazy"
-            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-105"
+            className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-105"
           />
           <figcaption className="absolute bottom-3 left-3 font-mono text-[10px] uppercase tracking-widest text-background bg-ink/70 backdrop-blur px-2 py-1">
             03 — Le lieu
@@ -77,41 +76,41 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
         </figure>
       </section>
 
+      {/* Date et lieu du mariage */}
       <section className="w-[80vw] mx-auto mt-16 md:mt-24 border-t border-b border-glass-edge py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
-  {[
-    {
-      k: t("date"),
-      v: new Date(home.weddingDate).toLocaleDateString(
-        language === "fr" ? "fr-FR" : "en-GB",
-        { day: "2-digit", month: "2-digit", year: "numeric" }
-      ).replace(/\//g, "."),
-    },
-    { k: t("ceremony"), v: "15:00" },
-    { k: t("venue"), v: translation?.venueAddress },
-  ].map((item) => (
-    <div key={item.k} className="flex flex-col">
-      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-2">
-        {item.k}
-      </span>
-      <span className="font-display text-xl md:text-2xl font-light tracking-tight">
-        {item.v}
-      </span>
-    </div>
-  ))}
-</section>
+        {[{
+          k: t("date"),
+          v: new Date(home.weddingDate).toLocaleDateString(
+            language === "fr" ? "fr-FR" : "en-GB",
+            { day: "2-digit", month: "2-digit", year: "numeric" }
+          ).replace(/\//g, "."),
+        },
+        { k: t("ceremony"), v: "15:00" },
+        { k: t("venue"), v: translation?.venueAddress },
+        ].map((item) => (
+        <div key={item.k} className="flex flex-col">
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-2">
+            {item.k}
+          </span>
+          <span className="font-display text-xl md:text-2xl font-light tracking-tight">
+            {item.v}
+          </span>
+        </div>
+        ))}
+      </section>
 
       {/* CTA */}
       <section className="w-[80vw] mx-auto mt-16 md:mt-24 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         <div className="max-w-md">
         <h2 className="text-3xl md:text-4xl font-light tracking-tight text-balance">
-  {t("confirmrsvp")}{" "}
-  <span className="font-mono text-2xl md:text-3xl">
-    {new Date(home.rsvpDeadline).toLocaleDateString(
-      language === "fr" ? "fr-FR" : "en-GB",
-      { day: "2-digit", month: "2-digit", year: "numeric" }
-    ).replace(/\//g, ".")}
-  </span>.
-</h2>
+          {t("confirmrsvp")}{" "}
+          <span className="font-mono text-2xl md:text-3xl">
+            {new Date(home.rsvpDeadline).toLocaleDateString(
+              language === "fr" ? "fr-FR" : "en-GB",
+              { day: "2-digit", month: "2-digit", year: "numeric" }
+            ).replace(/\//g, ".")}
+          </span>.
+        </h2>
         </div>
         <a
           href="/rsvp"
