@@ -98,7 +98,7 @@ export async function PUT(request: NextRequest) {
       const isNewPlusOne = guest.id > 1000000000000;
 
       if (isNewPlusOne) {
-        // Créer un nouveau plus-one
+        // Créer un nouveau plus-one (plusOneOf conservé pour le back-office)
         return prisma.guest.create({
           data: {
             groupId: existingGroup.id,

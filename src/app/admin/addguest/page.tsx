@@ -4,8 +4,12 @@ import Input from "@/components/Input";
 import { Guest } from "@/types";
 import { useState } from "react";
 import { apiPath } from "@/lib/api-client";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const AddGuest = () => {
+  const router = useRouter();
+  const adminToken = Cookies.get("adminToken");
   const [guests, setGuests] = useState<Partial<Guest>[]>([
     { firstName: "", lastName: "", allowsPlusOne: false },
   ]);
@@ -89,6 +93,9 @@ const AddGuest = () => {
     }
   };
 
+  if(!adminToken) {
+    router.push("/login")
+  }
   return (
     <div className="max-w-2xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Ajouter un groupe dinvités</h1>

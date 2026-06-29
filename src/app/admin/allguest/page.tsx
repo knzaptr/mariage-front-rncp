@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Button from "@/components/Button";
 import { apiPath } from "@/lib/api-client";
+import { useRouter } from "next/navigation";
 
 export default function PageAllGuest() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [allGuests, setAllGuests] = useState<Guest[]>([]);
   const adminToken = Cookies.get("adminToken");
@@ -106,6 +109,10 @@ export default function PageAllGuest() {
     }
   };
 
+  if(!adminToken) {
+    router.push("/login")
+  }
+
   return (
     <div className="p-6">
       <Title level={1}>Liste de tous les invités</Title>
@@ -125,6 +132,7 @@ export default function PageAllGuest() {
               <th className="border px-4 py-2">RSVP</th>
               <th className="border px-4 py-2">Présence</th>
               <th className="border px-4 py-2">Plat</th>
+              <th className="border px-4 py-2">Allergies</th>
               <th className="border px-4 py-2">Plus-One de</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
@@ -144,7 +152,8 @@ export default function PageAllGuest() {
                       ? "Oui"
                       : "Non"}
                 </td>
-                <td className="border px-4 py-2">{guest.mealChoice || "—"}</td>
+                <td className="border px-4 py-2">{guest.attending ? (guest.mealChoice || "—") : "—"}</td>
+                <td className="border px-4 py-2">{guest.attending ? (guest.allergies || "—") : "—"}</td>
                 <td className="border px-4 py-2">{guest.plusOneOf || "—"}</td>
                 <td className="border px-4 py-2">
                   <button

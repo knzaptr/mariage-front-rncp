@@ -222,6 +222,11 @@ const RsvpPage = () => {
     );
   };
 
+  // Un plus-one déjà enregistré en base possède un id réel (faible).
+  // Un plus-one ajouté dans la session a un id temporaire (Date.now()).
+  const isPlusOneLocked = (plusOne: Guest): boolean =>
+    plusOne.id < 1000000000000;
+
   return (
     <section className="py-8">
       <div className="mx-auto">
@@ -400,13 +405,25 @@ const RsvpPage = () => {
                                       />
                                       <span>{t("yes")}</span>
                                     </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
+                                    <label
+                                      className={`flex items-center gap-2 ${
+                                        plusOne && isPlusOneLocked(plusOne)
+                                          ? "cursor-not-allowed opacity-50"
+                                          : "cursor-pointer"
+                                      }`}
+                                    >
                                       <Input
                                         type="radio"
                                         name={`addPlusOne-${guest.id}`}
                                         checked={!plusOne}
+                                        disabled={
+                                          !!plusOne && isPlusOneLocked(plusOne)
+                                        }
                                         onChange={() => {
-                                          if (plusOne) {
+                                          if (
+                                            plusOne &&
+                                            !isPlusOneLocked(plusOne)
+                                          ) {
                                             removePlusOne(guest);
                                           }
                                         }}
@@ -418,38 +435,44 @@ const RsvpPage = () => {
 
                                 {plusOne && (
                                   <div className="bg-white rounded p-4 space-y-4">
-                                    <div className="grid grid-cols-2 gap-3">
-                                      <div>
-                                        <label className="block text-gray-700 text-sm font-medium mb-2">
-                                          {t("name")} *
-                                        </label>
-                                        <Input
-                                          type="text"
-                                          placeholder={t("name")}
-                                          value={plusOne.lastName || ""}
-                                          onChange={(e) =>
-                                            updateGuest(plusOne.id, {
-                                              lastName: e.target.value,
-                                            })
-                                          }
-                                        />
+                                    {isPlusOneLocked(plusOne) ? (
+                                      <h4 className="text-lg font-semibold text-gray-800">
+                                        {plusOne.firstName} {plusOne.lastName}
+                                      </h4>
+                                    ) : (
+                                      <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                          <label className="block text-gray-700 text-sm font-medium mb-2">
+                                            {t("name")} *
+                                          </label>
+                                          <Input
+                                            type="text"
+                                            placeholder={t("name")}
+                                            value={plusOne.lastName || ""}
+                                            onChange={(e) =>
+                                              updateGuest(plusOne.id, {
+                                                lastName: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
+                                        <div>
+                                          <label className="block text-gray-700 text-sm font-medium mb-2">
+                                            {t("firstname")} *
+                                          </label>
+                                          <Input
+                                            type="text"
+                                            placeholder={t("firstname")}
+                                            value={plusOne.firstName || ""}
+                                            onChange={(e) =>
+                                              updateGuest(plusOne.id, {
+                                                firstName: e.target.value,
+                                              })
+                                            }
+                                          />
+                                        </div>
                                       </div>
-                                      <div>
-                                        <label className="block text-gray-700 text-sm font-medium mb-2">
-                                          {t("firstname")} *
-                                        </label>
-                                        <Input
-                                          type="text"
-                                          placeholder={t("firstname")}
-                                          value={plusOne.firstName || ""}
-                                          onChange={(e) =>
-                                            updateGuest(plusOne.id, {
-                                              firstName: e.target.value,
-                                            })
-                                          }
-                                        />
-                                      </div>
-                                    </div>
+                                    )}
 
                                     <div>
                                       <label className="block text-gray-700 text-sm font-medium mb-2">
