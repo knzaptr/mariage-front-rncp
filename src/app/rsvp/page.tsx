@@ -39,8 +39,8 @@ const RsvpPage = () => {
         firstName: "",
         lastName: "",
         hasResponded: false,
-        attending: false,
-        mealChoice: "viande",
+        attending: true,
+        mealChoice: null,
         allergies: "",
         allowsPlusOne: false,
         plusOneOf: mainGuest.firstName + " " + mainGuest.lastName, // Stocker l'ID au lieu du nom
@@ -100,6 +100,13 @@ const RsvpPage = () => {
     if (!foundGroup) return;
 
     for (const guest of foundGroup.guests) {
+      if (guest.plusOneOf && (!guest.firstName || !guest.lastName)) {
+        setErrorMessage(
+          "Veuillez remplir le nom et prénom de votre accompagnant",
+        );
+        return;
+      }
+
       if (guest.attending === null || guest.attending === undefined) {
         setErrorMessage(
           `Veuillez indiquer si ${
@@ -111,14 +118,9 @@ const RsvpPage = () => {
 
       if (guest.attending && !guest.mealChoice) {
         setErrorMessage(
-          `Veuillez choisir le repas pour ${guest.firstName || "l'invité"}`,
-        );
-        return;
-      }
-
-      if (guest.plusOneOf && (!guest.firstName || !guest.lastName)) {
-        setErrorMessage(
-          "Veuillez remplir le nom et prénom de votre accompagnant",
+          guest.plusOneOf
+            ? "Veuillez choisir le repas de votre accompagnant"
+            : `Veuillez choisir le repas pour ${guest.firstName || "l'invité"}`,
         );
         return;
       }

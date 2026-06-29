@@ -128,8 +128,8 @@ export type Guest = {
   firstName: string;
   lastName: string;
   hasResponded: boolean;
-  attending: boolean;
-  mealChoice: MealChoice;
+  attending: boolean | null;
+  mealChoice: MealChoice | null;
   allergies: string;
   allowsPlusOne: boolean;
   plusOneOf: string | null;
