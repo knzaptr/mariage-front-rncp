@@ -85,16 +85,35 @@ export default function HomeClient({ home }: { home: WeddingInfo }) {
             { day: "2-digit", month: "2-digit", year: "numeric" }
           ).replace(/\//g, "."),
         },
-        { k: t("ceremony"), v: "15:00" },
+        { k: t("ceremony"), v: "14:00" },
         { k: t("venue"), v: translation?.venueAddress },
+        { k: t("faq"), v: t("questionprompt") },
         ].map((item) => (
-        <div key={item.k} className="flex flex-col">
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-2">
+          <div key={item.k} className="flex flex-col">
+          <span className="mb-2 font-mono text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
             {item.k}
           </span>
-          <span className="font-display text-xl md:text-2xl font-light tracking-tight">
-            {item.v}
-          </span>
+        
+          {item.k === t("venue") ? (
+            <a
+              href={home.venueLink}
+              className="font-display text-xl md:text-2xl font-light tracking-tight"
+            >
+              {item.v}
+            </a>
+          ) 
+          : item.k === t("faq") ? (
+            <a
+              href="/faq"
+              className="font-display text-xl md:text-2xl font-light tracking-tight"
+            >
+              {item.v}
+            </a>
+          ) : (
+            <span className="font-display text-xl md:text-2xl font-light tracking-tight">
+              {item.v}
+            </span>
+          )}
         </div>
         ))}
       </section>
